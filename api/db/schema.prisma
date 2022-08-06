@@ -1,0 +1,57 @@
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = "native"
+}
+
+model User {
+  uid   String  @id @unique
+  name  String?
+  shelf Shelf[]
+}
+
+model Author {
+  id   Int    @id @default(autoincrement())
+  name String
+  Book Book[]
+}
+
+model Tag {
+  id   Int    @id @default(autoincrement())
+  name String
+  Book Book[]
+}
+
+model Note {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  content   String
+  Book      Book     @relation(fields: [bookId], references: [id])
+  bookId    Int
+}
+
+model Book {
+  id         Int      @id @default(autoincrement())
+  isbn       String?
+  title      String
+  author     Author[]
+  coverImage String?
+  tags       Tag[]
+  blurb      String?
+  rating     Int
+  notes      Note[]
+  Shelf      Shelf    @relation(fields: [shelfId], references: [id])
+  shelfId    Int
+}
+
+model Shelf {
+  id      Int    @id @default(autoincrement())
+  name    String
+  books   Book[]
+  User    User   @relation(fields: [userUid], references: [uid])
+  userUid String
+}
