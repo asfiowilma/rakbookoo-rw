@@ -2,7 +2,7 @@ import React from 'react'
 
 import { RakInputProps } from 'types/form'
 
-import { FieldError, Label, TextField, useRegister } from '@redwoodjs/forms'
+import { FieldError, Label, TextField } from '@redwoodjs/forms'
 
 const RakTextField = ({
   name,
@@ -10,11 +10,6 @@ const RakTextField = ({
   validation,
   defaultValue,
 }: RakInputProps) => {
-  const register = useRegister({
-    name,
-    validation,
-  })
-
   return (
     <>
       {label && (
@@ -29,8 +24,7 @@ const RakTextField = ({
       <TextField
         className="rw-input"
         errorClassName="rw-input rw-input-error"
-        {...{ name, defaultValue }}
-        {...register}
+        {...{ name, defaultValue, validation }}
       />
       <FieldError name={name} className="rw-field-error" />
     </>
