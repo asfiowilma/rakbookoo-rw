@@ -11,7 +11,12 @@ import {
 import CreatableSelect from 'react-select/creatable'
 import { RakCreatableSelectFieldProps, SelectOptionProps } from 'types/form'
 
-import { FieldError, useErrorStyles, useRegister } from '@redwoodjs/forms'
+import {
+  FieldError,
+  Label,
+  useErrorStyles,
+  useRegister,
+} from '@redwoodjs/forms'
 
 const DropdownIndicator = (props: any): JSX.Element => {
   return (
@@ -95,9 +100,9 @@ const SelectField = ({
   return (
     <>
       {label && (
-        <label className={labelClassName} style={labelStyle}>
+        <Label name={name} className={labelClassName} style={labelStyle}>
           {label}
-        </label>
+        </Label>
       )}
       <CreatableSelect
         id={`createable-${id}`}
