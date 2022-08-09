@@ -52,7 +52,7 @@ export const Success = ({ book }: CellSuccessProps<EditBookById>) => {
   })
 
   const onSave = (input, id) => {
-    const castInput = Object.assign(input, { shelfId: parseInt(input.shelfId), })
+    const castInput = Object.assign(input, { shelfId: parseInt(input.shelfId) })
     updateBook({ variables: { id, input: castInput } })
   }
 
@@ -62,7 +62,13 @@ export const Success = ({ book }: CellSuccessProps<EditBookById>) => {
         <h2 className="rw-heading rw-heading-secondary">Edit Book {book.id}</h2>
       </header>
       <div className="rw-segment-main">
-        <BookForm book={book} onSave={onSave} error={error} loading={loading} />
+        <BookForm
+          book={book}
+          shelfId={book.shelfId}
+          onSave={onSave}
+          error={error}
+          loading={loading}
+        />
       </div>
     </div>
   )

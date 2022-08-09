@@ -1,135 +1,63 @@
-import {
-  Form,
-  FormError,
-  FieldError,
-  Label,
-  TextField,
-  NumberField,
-  Submit,
-} from '@redwoodjs/forms'
+import { Form, FormError, Submit, RWGqlError } from '@redwoodjs/forms'
 
-const BookForm = (props) => {
+import NumberField from 'src/components/Form/NumberField'
+import TextAreaField from 'src/components/Form/TextAreaField'
+import TextField from 'src/components/Form/TextField'
+
+interface BookFormProps {
+  book?: BookInputData
+  onSave: CallableFunction
+  error: RWGqlError
+  loading: boolean
+  shelfId: number
+}
+
+const BookForm = ({ book, onSave, error, loading, shelfId }: BookFormProps) => {
   const onSubmit = (data) => {
-    props.onSave(data, props?.book?.id)
+    onSave(data, book?.id)
   }
 
   return (
     <div className="rw-form-wrapper">
-      <Form onSubmit={onSubmit} error={props.error}>
+      <Form onSubmit={onSubmit} error={error}>
         <FormError
-          error={props.error}
+          error={error}
           wrapperClassName="rw-form-error-wrapper"
           titleClassName="rw-form-error-title"
           listClassName="rw-form-error-list"
         />
-
-        <Label
-          name="isbn"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Isbn
-        </Label>
-
-        <TextField
-          name="isbn"
-          defaultValue={props.book?.isbn}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
-        />
-
-        <FieldError name="isbn" className="rw-field-error" />
-
-        <Label
-          name="title"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Title
-        </Label>
-
+        <TextField name="isbn" label="ISBN" defaultValue={book?.isbn} />
         <TextField
           name="title"
-          defaultValue={props.book?.title}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
+          label="Title"
+          defaultValue={book?.title}
           validation={{ required: true }}
         />
-
-        <FieldError name="title" className="rw-field-error" />
-
-        <Label
-          name="coverImage"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Cover image
-        </Label>
-
         <TextField
           name="coverImage"
-          defaultValue={props.book?.coverImage}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
+          label="Book Cover"
+          defaultValue={book?.coverImage}
         />
-
-        <FieldError name="coverImage" className="rw-field-error" />
-
-        <Label
+        <TextAreaField
           name="blurb"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Blurb
-        </Label>
-
-        <TextField
-          name="blurb"
-          defaultValue={props.book?.blurb}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
+          label="Blurb"
+          cols={6}
+          defaultValue={book?.blurb}
         />
-
-        <FieldError name="blurb" className="rw-field-error" />
-
-        <Label
-          name="rating"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Rating
-        </Label>
-
         <NumberField
           name="rating"
-          defaultValue={props.book?.rating}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
-          validation={{ required: true }}
+          label="Rating"
+          defaultValue={book?.rating ?? 0}
         />
-
-        <FieldError name="rating" className="rw-field-error" />
-
-        <Label
-          name="shelfId"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Shelf id
-        </Label>
-
+        {/*TODO: select shelf  */}
         <NumberField
-          name="shelfId"
-          defaultValue={props.shelfId}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
+          name="rating"
+          label="Rating"
+          defaultValue={shelfId}
           validation={{ required: true }}
         />
-
-        <FieldError name="shelfId" className="rw-field-error" />
-
         <div className="rw-button-group">
-          <Submit disabled={props.loading} className="rw-button rw-button-blue">
+          <Submit disabled={loading} className="rw-button rw-button-blue">
             Save
           </Submit>
         </div>

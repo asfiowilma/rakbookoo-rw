@@ -14,6 +14,8 @@ interface RakInputProps {
   defaultValue?: string | number
   label?: string
   validation?: RegisterOptions
+  cols?: number
+  rows?: number
 }
 
 interface RakSelectFieldProps extends Omit<SelectFieldProps, 'onChange'> {

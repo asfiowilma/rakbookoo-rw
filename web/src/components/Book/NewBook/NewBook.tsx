@@ -24,7 +24,7 @@ const NewBook = () => {
   })
 
   const onSave = (input) => {
-    const castInput = Object.assign(input, { shelfId: parseInt(input.shelfId), })
+    const castInput = Object.assign(input, { shelfId: parseInt(input.shelfId) })
     createBook({ variables: { input: castInput } })
   }
 
@@ -34,7 +34,7 @@ const NewBook = () => {
         <h2 className="rw-heading rw-heading-secondary">New Book</h2>
       </header>
       <div className="rw-segment-main">
-        <BookForm onSave={onSave} loading={loading} error={error} />
+        <BookForm onSave={onSave} loading={loading} error={error} shelfId={0} />
       </div>
     </div>
   )
