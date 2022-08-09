@@ -1,12 +1,19 @@
 import { ActionMeta, SingleValue } from 'react-select'
 
-import { SelectFieldProps } from '@redwoodjs/forms'
+import { RegisterOptions, SelectFieldProps } from '@redwoodjs/forms'
 
 type SelectOptionProps = {
   value: string | number
   label: string
   id?: string
   disabled?: boolean
+}
+
+interface RakInputProps {
+  name: string
+  defaultValue?: string | number
+  label?: string
+  validation?: RegisterOptions
 }
 
 interface RakSelectFieldProps extends Omit<SelectFieldProps, 'onChange'> {
