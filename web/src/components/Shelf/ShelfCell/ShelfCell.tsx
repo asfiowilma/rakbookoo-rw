@@ -10,6 +10,16 @@ export const QUERY = gql`
       id
       name
       userUid
+      books {
+        isbn
+        title
+        authors {
+          name
+        }
+        tags {
+          name
+        }
+      }
     }
   }
 `

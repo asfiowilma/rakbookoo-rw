@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Select, { StylesConfig, components } from 'react-select'
+import Select from 'react-select'
 import { RakSelectFieldProps, SelectOptionProps } from 'types/form'
 
 import {
@@ -9,49 +9,24 @@ import {
   useRegister,
 } from '@redwoodjs/forms'
 
-const DropdownIndicator = (props: any): JSX.Element => {
-  return (
-    <components.DropdownIndicator {...props}>v</components.DropdownIndicator>
-  )
-}
-
 const SelectField = ({
   label,
   name,
   options,
   value,
+  onChange,
   validation,
   placeholder,
-  onChange,
   disabled,
   isSearchable,
-}: RakSelectFieldProps) => {
-  const { onChange: _onChange, ...register } = useRegister({
-    name,
-    validation: { ...validation, required: true },
-  })
+}: RakSelectFieldProps<string | number>) => {
+  const register = useRegister({ name, validation })
 
   const { className: labelClassName, style: labelStyle } = useErrorStyles({
-    className: `my-label-class`,
-    errorClassName: `my-label-error-class`,
+    className: `rw-label`,
+    errorClassName: `rw-label rw-label-error`,
     name,
   })
-
-  const customStyles: StylesConfig<SelectOptionProps, false> = {
-    control: (styles: any) => ({
-      ...styles,
-      borderRadius: '8px',
-    }),
-    placeholder: (styles: any) => ({
-      ...styles,
-      color: 'burlywood',
-    }),
-    dropdownIndicator: (styles: any) => ({
-      ...styles,
-      color: 'black',
-    }),
-    indicatorSeparator: () => ({ display: 'none' }),
-  }
 
   return (
     <>
@@ -61,13 +36,11 @@ const SelectField = ({
         </Label>
       )}
       <Select
-        styles={customStyles}
-        components={{ DropdownIndicator }}
-        value={options.find((opt: SelectOptionProps) => opt.value === value)}
-        isDisabled={disabled}
-        onChange={(val, event) => onChange(val?.value, event)}
-        {...{ options, placeholder, isSearchable }}
         {...register}
+        value={options.find((opt: SelectOptionProps) => opt.value === value)}
+        onChange={(val, action) => onChange(val.value, action)}
+        isDisabled={disabled}
+        {...{ options, placeholder, isSearchable }}
       />
       <FieldError name={name} />
     </>

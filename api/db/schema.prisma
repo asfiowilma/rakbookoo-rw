@@ -1,11 +1,11 @@
-datasource db {
-  provider = "postgres"
-  url      = env("DATABASE_URL")
-}
-
 generator client {
   provider      = "prisma-client-js"
-  binaryTargets = "native"
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -30,28 +30,28 @@ model Note {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   content   String
-  Book      Book     @relation(fields: [bookId], references: [id])
   bookId    Int
+  Book      Book     @relation(fields: [bookId], references: [id])
 }
 
 model Book {
   id         Int      @id @default(autoincrement())
   isbn       String?
   title      String
-  author     Author[]
   coverImage String?
-  tags       Tag[]
   blurb      String?
   rating     Int
-  notes      Note[]
-  Shelf      Shelf    @relation(fields: [shelfId], references: [id])
   shelfId    Int
+  Shelf      Shelf    @relation(fields: [shelfId], references: [id])
+  notes      Note[]
+  authors    Author[]
+  tags       Tag[]
 }
 
 model Shelf {
   id      Int    @id @default(autoincrement())
   name    String
-  books   Book[]
-  User    User   @relation(fields: [userUid], references: [uid])
   userUid String
+  User    User   @relation(fields: [userUid], references: [uid])
+  books   Book[]
 }

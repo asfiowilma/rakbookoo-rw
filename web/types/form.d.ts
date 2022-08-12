@@ -1,6 +1,10 @@
-import { ActionMeta, SingleValue } from 'react-select'
+import { ActionMeta } from 'react-select'
 
-import { RegisterOptions, SelectFieldProps } from '@redwoodjs/forms'
+import {
+  RegisterOptions,
+  SelectFieldProps,
+  UseFormReturn,
+} from '@redwoodjs/forms'
 
 type SelectOptionProps = {
   value: string | number
@@ -18,29 +22,33 @@ interface RakInputProps {
   rows?: number
 }
 
-interface RakSelectFieldProps extends Omit<SelectFieldProps, 'onChange'> {
+interface RakSelectFieldProps<T = unknown>
+  extends Omit<SelectFieldProps, 'onChange' | 'value' | 'defaultValue'> {
   name: string
   label?: string | React.ReactNode
   helper?: string | React.ReactNode
   light?: boolean
   plain?: boolean
   options: SelectOptionProps[]
-  onChange: (
-    newValue: SingleValue<string | number>,
-    actionMeta: ActionMeta<SelectOptionProps>
-  ) => void
-  value: string | null
+  onChange: (newValue: T, actionMeta: ActionMeta<SelectOptionProps>) => void
+  defaultValue?: unknown
+  value?: T
   disabled?: boolean
   placeholder?: string
   isSearchable?: boolean
+  isMulti?: boolean
 }
 
-type RakCreatableSelectFieldProps = Omit<
-  RakSelectFieldProps,
-  'options' | 'value'
-> & {
+interface RakSelectFormProps<T>
+  extends Pick<
+    UseFormReturn<BookInputData, object>,
+    'control' | 'setValue' | 'watch'
+  > {
+  defaultValue?: T
+}
+
+type RakCreatableSelectFieldProps = Omit<RakSelectFieldProps, 'options'> & {
   id: string
-  value: string
   onCreateInput?: CallableFunction
   options?: SelectOptionProps[]
 }

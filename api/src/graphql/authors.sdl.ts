@@ -6,8 +6,8 @@ export const schema = gql`
   }
 
   type Query {
-    authors: [Author!]! @requireAuth
-    author(id: Int!): Author @requireAuth
+    authors: [Author!]! @skipAuth
+    author(id: Int!): Author @skipAuth
   }
 
   input CreateAuthorInput {
@@ -20,7 +20,5 @@ export const schema = gql`
 
   type Mutation {
     createAuthor(input: CreateAuthorInput!): Author! @requireAuth
-    updateAuthor(id: Int!, input: UpdateAuthorInput!): Author! @requireAuth
-    deleteAuthor(id: Int!): Author! @requireAuth
   }
 `

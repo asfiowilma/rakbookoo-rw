@@ -4,7 +4,8 @@ import { Link, routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
-import { shelf } from '../../../../../api/src/services/shelves/shelves'
+import useBookForm from 'src/hooks/useBookForm'
+
 import BookForm from '../../Book/BookForm/BookForm'
 
 const DELETE_SHELF_MUTATION = gql`
@@ -14,7 +15,6 @@ const DELETE_SHELF_MUTATION = gql`
     }
   }
 `
-
 const formatEnum = (values: string | string[] | null | undefined) => {
   if (values) {
     if (Array.isArray(values)) {
@@ -49,6 +49,16 @@ const checkboxInputTag = (checked) => {
 }
 
 const Shelf = ({ shelf }) => {
+  console.log('🚀 ~ file: Shelf.tsx ~ line 61 ~ Shelf ~ shelf', shelf)
+  const {
+    createBook,
+    isCreateLoading,
+    createError,
+    formMethods,
+    control,
+    watch,
+    setValue,
+  } = useBookForm()
   const [deleteShelf] = useMutation(DELETE_SHELF_MUTATION, {
     onCompleted: () => {
       toast.success('Shelf deleted')
@@ -58,6 +68,11 @@ const Shelf = ({ shelf }) => {
       toast.error(error.message)
     },
   })
+
+  const onSave = (input) => {
+    const castInput = { ...input, rating: parseInt(input.rating) }
+    createBook({ variables: { input: castInput } })
+  }
 
   const onDeleteClick = (id) => {
     if (confirm('Are you sure you want to delete shelf ' + id + '?')) {
@@ -105,7 +120,13 @@ const Shelf = ({ shelf }) => {
           Delete
         </button>
       </nav>
-      <BookForm shelfId={shelf.id} />
+      {shelf?.books.map((book) => jsonDisplay(book))}
+      <BookForm
+        {...{ formMethods, control, watch, setValue, onSave }}
+        loading={isCreateLoading}
+        error={createError}
+        shelfId={shelf.id}
+      />
     </>
   )
 }

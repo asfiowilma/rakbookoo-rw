@@ -8,8 +8,8 @@ export const schema = gql`
   }
 
   type Query {
-    shelves(userUid: String!): [Shelf!]! @requireAuth
-    shelf(id: Int!): Shelf @requireAuth
+    shelves(userUid: String!): [Shelf!]! @skipAuth
+    shelf(id: Int!): Shelf @skipAuth
   }
 
   input CreateShelfInput {

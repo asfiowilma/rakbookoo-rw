@@ -3,7 +3,7 @@ export const schema = gql`
     id: Int!
     isbn: String
     title: String!
-    author: [Author]!
+    authors: [Author]!
     coverImage: String
     tags: [Tag]!
     blurb: String
@@ -14,8 +14,8 @@ export const schema = gql`
   }
 
   type Query {
-    books: [Book!]! @requireAuth
-    book(id: Int!): Book @requireAuth
+    books: [Book!]! @skipAuth
+    book(id: Int!): Book @skipAuth
   }
 
   input CreateBookInput {
@@ -25,6 +25,8 @@ export const schema = gql`
     blurb: String
     rating: Int!
     shelfId: Int!
+    authors: [BaseItemInput]
+    tags: [BaseItemInput]
   }
 
   input UpdateBookInput {
@@ -34,6 +36,13 @@ export const schema = gql`
     blurb: String
     rating: Int
     shelfId: Int
+    authors: [BaseItemInput]
+    tags: [BaseItemInput]
+  }
+
+  input BaseItemInput {
+    id: Int
+    name: String!
   }
 
   type Mutation {
