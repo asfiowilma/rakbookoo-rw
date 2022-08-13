@@ -9,6 +9,7 @@ const RakNumberField = ({
   label,
   defaultValue,
   validation,
+  inputRef,
 }: RakInputProps) => {
   return (
     <>
@@ -23,6 +24,7 @@ const RakNumberField = ({
       )}
 
       <NumberField
+        ref={inputRef}
         className="rw-input"
         errorClassName="rw-input rw-input-error"
         validation={{

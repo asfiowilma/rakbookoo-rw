@@ -11,6 +11,7 @@ const RakTextAreaField = ({
   defaultValue,
   cols,
   rows,
+  inputRef,
 }: RakInputProps) => {
   return (
     <>
@@ -24,6 +25,7 @@ const RakTextAreaField = ({
         </Label>
       )}
       <TextAreaField
+        ref={inputRef}
         className="rw-input"
         errorClassName="rw-input rw-input-error"
         {...{ name, defaultValue, validation, cols, rows }}
