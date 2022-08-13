@@ -1,23 +1,15 @@
 export default ({ provider, ...rest }) => {
-  const { logo, value, label, disabled } = provider
-
-  const buttonClasses = 'p-2 border border-red-300 rounded-md flex justify-center items-center'
+  const { logo, value, disabled } = provider
 
   return (
     <button
       {...rest}
       disabled={disabled}
-      title={label}
+      title={value}
       value={value}
-      className={buttonClasses}
+      className="btn btn-sm gap-2"
     >
-      <img
-        src={logo}
-        style={{
-          maxWidth: '25px',
-        }}
-        alt={label}
-      />
+      {logo} <span>{value}</span>
     </button>
   )
 }

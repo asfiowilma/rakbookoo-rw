@@ -2,16 +2,12 @@ import ThirdPartyProviderButton from './ThirdPartyProviderButton'
 
 export default ({ providers, onProviderClick, loading, ...rest }) => {
   if (loading) {
-    return (
-      <div className="flex justify-center items-center my-6">
-        Loading
-      </div>
-    )
+    return <div className="flex items-center justify-center">Loading..</div>
   }
   return (
     <>
-      <p className="text-center">Or continue with</p>
-      <div {...rest} className="py-4 grid xs:grid-cols-1 sm:grid-cols-3 gap-2">
+      <div className="divider">atau</div>
+      <div {...rest} className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {providers.map((provider) => (
           <ThirdPartyProviderButton
             key={provider.value}
