@@ -1,137 +1,95 @@
 import { useRef } from 'react'
 import { useEffect } from 'react'
 
+import { BiBookHeart } from 'react-icons/bi'
+import { MdEmail } from 'react-icons/md'
+
 import { useAuth } from '@redwoodjs/auth'
-import {
-  Form,
-  Label,
-  TextField,
-  PasswordField,
-  Submit,
-  FieldError,
-} from '@redwoodjs/forms'
+import { Form, Submit } from '@redwoodjs/forms'
 import { Link, navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
-import { toast, Toaster } from '@redwoodjs/web/toast'
+import { toast } from '@redwoodjs/web/toast'
+
+import PasswordField from 'src/components/Form/PasswordField'
+import TextField from 'src/components/Form/TextField'
 import ThirdPartyProvider from 'src/components/ThirdPartyProvider/ThirdPartyProvider'
 
 const LoginPage = () => {
   const { isAuthenticated, logIn, loading } = useAuth()
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate(routes.home())
-    }
+    if (isAuthenticated) navigate(routes.home())
   }, [isAuthenticated])
 
   const emailRef = useRef<HTMLInputElement>()
-  useEffect(() => {
-    emailRef.current.focus()
-  }, [])
+  useEffect(() => emailRef.current.focus(), [])
 
   const onSubmit = async (data) => {
     const response = await logIn({ ...data })
-    console.log(
-      '🚀 ~ file: LoginPage.tsx ~ line 33 ~ onSubmit ~ response',
-      response
-    )
 
-    if (response.message) {
-      toast(response.message)
-    } else if (response.error) {
-      toast.error(response.error.message)
-    } else {
-      toast.success('Welcome back!')
-    }
+    if (response.message) toast(response.message)
+    else if (response.error) toast.error(response.error.message)
+    else toast.success('Welcome back!')
   }
 
   return (
     <>
       <MetaTags title="Login" />
 
-      <main className="rw-main">
-        <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
-        <div className="rw-scaffold rw-login-container">
-          <div className="rw-segment">
-            <header className="rw-segment-header">
-              <h2 className="rw-heading rw-heading-secondary">Login</h2>
-            </header>
+      <main className="mx-auto flex min-h-screen w-full max-w-screen-sm flex-col justify-center py-16">
+        <header>
+          <h1 className="text-h1 text-center">
+            Selamat Datang di
+            <span className="inline-block">
+              <BiBookHeart className="inline" />
+              Rakbookoo!
+            </span>
+          </h1>
+        </header>
 
-            <div className="rw-segment-main">
-              <div className="rw-form-wrapper">
-                <Form onSubmit={onSubmit} className="rw-form-wrapper">
-                  <Label
-                    name="email"
-                    className="rw-label"
-                    errorClassName="rw-label rw-label-error"
-                  >
-                    Email
-                  </Label>
-                  <TextField
-                    name="email"
-                    className="rw-input"
-                    errorClassName="rw-input rw-input-error"
-                    ref={emailRef}
-                    validation={{
-                      required: {
-                        value: true,
-                        message: 'Email is required',
-                      },
-                    }}
-                  />
-
-                  <FieldError name="email" className="rw-field-error" />
-
-                  <Label
-                    name="password"
-                    className="rw-label"
-                    errorClassName="rw-label rw-label-error"
-                  >
-                    Password
-                  </Label>
-                  <PasswordField
-                    name="password"
-                    className="rw-input"
-                    errorClassName="rw-input rw-input-error"
-                    autoComplete="current-password"
-                    validation={{
-                      required: {
-                        value: true,
-                        message: 'Password is required',
-                      },
-                    }}
-                  />
-
-                  <div className="rw-forgot-link">
-                    <Link
-                      to={routes.forgotPassword()}
-                      className="rw-forgot-link"
-                    >
-                      Forgot Password?
-                    </Link>
-                  </div>
-
-                  <FieldError name="password" className="rw-field-error" />
-
-                  <div className="rw-button-group">
-                    <Submit
-                      disabled={loading}
-                      className="rw-button rw-button-blue"
-                    >
-                      {loading ? 'Loading...' : 'Login'}
-                    </Submit>
-                  </div>
-                </Form>
-                <ThirdPartyProvider {...{ loading }} />
-              </div>
-            </div>
-          </div>
-          <div className="rw-login-link">
-            <span>Don&apos;t have an account?</span>{' '}
-            <Link to={routes.signup()} className="rw-link">
-              Sign up!
+        <div className="mt-8 flex w-full flex-col items-center text-center">
+          <div>
+            Belum punya akun?{' '}
+            <Link to={routes.signup()} className="link link-hover link-primary">
+              Daftar di sini~
             </Link>
           </div>
+          <Form
+            onSubmit={onSubmit}
+            className="form-control mt-3 w-full max-w-md gap-3"
+          >
+            <TextField
+              name="email"
+              placeholder="Masukkan email"
+              inputRef={emailRef}
+              validation={{
+                required: {
+                  value: true,
+                  message: 'Harap masukkan email',
+                },
+              }}
+              leftAdornment={
+                <span>
+                  <MdEmail />
+                </span>
+              }
+            />
+            <PasswordField name="password" placeholder="Masukkan password" />
+
+            <Submit
+              disabled={loading}
+              className={`btn btn-primary ${loading && 'loading'} `}
+            >
+              {loading ? 'Loading...' : 'masuk'}
+            </Submit>
+
+            <div className="self-end text-sm">
+              <Link to={routes.forgotPassword()} className="link link-hover">
+                Lupa password?
+              </Link>
+            </div>
+          </Form>
+          <ThirdPartyProvider {...{ loading }} />
         </div>
       </main>
     </>

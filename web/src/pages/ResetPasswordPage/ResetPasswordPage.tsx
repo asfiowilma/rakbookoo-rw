@@ -1,24 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
+
 import { useAuth } from '@redwoodjs/auth'
+import { Form, Submit } from '@redwoodjs/forms'
 import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
-import { toast, Toaster } from '@redwoodjs/web/toast'
-import {
-  Form,
-  Label,
-  PasswordField,
-  Submit,
-  FieldError,
-} from '@redwoodjs/forms'
+import { toast } from '@redwoodjs/web/toast'
+
+import PasswordField from 'src/components/Form/PasswordField'
 
 const ResetPasswordPage = ({ resetToken }) => {
-  const { isAuthenticated, reauthenticate, validateResetToken, resetPassword } = useAuth()
+  const { isAuthenticated, reauthenticate, validateResetToken, resetPassword } =
+    useAuth()
   const [enabled, setEnabled] = useState(true)
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate(routes.home())
-    }
+    if (isAuthenticated) navigate(routes.home())
   }, [isAuthenticated])
 
   useEffect(() => {
@@ -27,17 +23,13 @@ const ResetPasswordPage = ({ resetToken }) => {
       if (response.error) {
         setEnabled(false)
         toast.error(response.error)
-      } else {
-        setEnabled(true)
-      }
+      } else setEnabled(true)
     }
     validateToken()
   }, [])
 
   const passwordRef = useRef<HTMLInputElement>()
-  useEffect(() => {
-    passwordRef.current.focus()
-  }, [])
+  useEffect(() => passwordRef.current.focus(), [])
 
   const onSubmit = async (data) => {
     const response = await resetPassword({
@@ -45,9 +37,8 @@ const ResetPasswordPage = ({ resetToken }) => {
       password: data.password,
     })
 
-    if (response.error) {
-      toast.error(response.error)
-    } else {
+    if (response.error) toast.error(response.error)
+    else {
       toast.success('Password changed!')
       await reauthenticate()
       navigate(routes.login())
@@ -58,57 +49,32 @@ const ResetPasswordPage = ({ resetToken }) => {
     <>
       <MetaTags title="Reset Password" />
 
-      <main className="rw-main">
-        <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
-        <div className="rw-scaffold rw-login-container">
-          <div className="rw-segment">
-            <header className="rw-segment-header">
-              <h2 className="rw-heading rw-heading-secondary">
-                Reset Password
-              </h2>
-            </header>
+      <main className="mx-auto flex min-h-screen w-full max-w-screen-sm flex-col justify-center py-16">
+        <header>
+          <header className="text-center ">
+            <h1 className="text-h2 pb-2 text-center">Reset Password</h1>
+            <p>Masukkan password baru untuk akun kamu.</p>
+            <p>Hati-hati jangan lupa lagi ya~</p>
+          </header>
+        </header>
 
-            <div className="rw-segment-main">
-              <div className="rw-form-wrapper">
-                <Form onSubmit={onSubmit} className="rw-form-wrapper">
-                  <div className="text-left">
-                    <Label
-                      name="password"
-                      className="rw-label"
-                      errorClassName="rw-label rw-label-error"
-                    >
-                      New Password
-                    </Label>
-                    <PasswordField
-                      name="password"
-                      autoComplete="new-password"
-                      className="rw-input"
-                      errorClassName="rw-input rw-input-error"
-                      disabled={!enabled}
-                      ref={passwordRef}
-                      validation={{
-                        required: {
-                          value: true,
-                          message: 'Password is required',
-                        },
-                      }}
-                    />
-
-                    <FieldError name="password" className="rw-field-error" />
-                  </div>
-
-                  <div className="rw-button-group">
-                    <Submit
-                      className="rw-button rw-button-blue"
-                      disabled={!enabled}
-                    >
-                      Submit
-                    </Submit>
-                  </div>
-                </Form>
-              </div>
-            </div>
-          </div>
+        <div className="mt-4 flex w-full flex-col items-center text-center">
+          <Form
+            onSubmit={onSubmit}
+            className="form-control mt-3 w-full max-w-md gap-3"
+          >
+            <PasswordField
+              inputRef={passwordRef}
+              name="password"
+              placeholder="Masukkan password baru"
+            />
+            <Submit
+              className={`btn btn-primary ${!enabled && 'loading'} `}
+              disabled={!enabled}
+            >
+              {!enabled ? 'Loading...' : 'submit'}
+            </Submit>
+          </Form>
         </div>
       </main>
     </>

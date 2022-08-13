@@ -10,7 +10,6 @@
 import { Set, Router, Route } from '@redwoodjs/router'
 
 import BooksLayout from 'src/layouts/BooksLayout'
-
 import ShelvesLayout from 'src/layouts/ShelvesLayout'
 
 const Routes = () => {

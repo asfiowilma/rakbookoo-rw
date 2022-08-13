@@ -1,3 +1,5 @@
+import { MutableRefObject, ReactNode } from 'react'
+
 import { ActionMeta } from 'react-select'
 
 import {
@@ -16,10 +18,15 @@ type SelectOptionProps = {
 interface RakInputProps {
   name: string
   defaultValue?: string | number
+  placeholder?: string
   label?: string
   validation?: RegisterOptions
   cols?: number
   rows?: number
+  leftAdornment?: ReactNode
+  rightAdornment?: ReactNode
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  inputRef?: MutableRefObject<any>
 }
 
 interface RakSelectFieldProps<T = unknown>
