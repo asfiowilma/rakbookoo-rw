@@ -13,7 +13,15 @@ export const QUERY = gql`
       coverImage
       blurb
       rating
-      shelfId
+      Shelf {
+        name
+      }
+      authors {
+        name
+      }
+      tags {
+        name
+      }
     }
   }
 `

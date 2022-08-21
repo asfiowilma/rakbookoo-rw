@@ -1,4 +1,4 @@
-import humanize from 'humanize-string'
+import { FaStar } from 'react-icons/fa'
 
 import { Link, routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
@@ -11,39 +11,6 @@ const DELETE_BOOK_MUTATION = gql`
     }
   }
 `
-
-const formatEnum = (values: string | string[] | null | undefined) => {
-  if (values) {
-    if (Array.isArray(values)) {
-      const humanizedValues = values.map((value) => humanize(value))
-      return humanizedValues.join(', ')
-    } else {
-      return humanize(values as string)
-    }
-  }
-}
-
-const jsonDisplay = (obj) => {
-  return (
-    <pre>
-      <code>{JSON.stringify(obj, null, 2)}</code>
-    </pre>
-  )
-}
-
-const timeTag = (datetime) => {
-  return (
-    datetime && (
-      <time dateTime={datetime} title={datetime}>
-        {new Date(datetime).toUTCString()}
-      </time>
-    )
-  )
-}
-
-const checkboxInputTag = (checked) => {
-  return <input type="checkbox" checked={checked} disabled />
-}
 
 const Book = ({ book }) => {
   const [deleteBook] = useMutation(DELETE_BOOK_MUTATION, {
@@ -64,52 +31,80 @@ const Book = ({ book }) => {
 
   return (
     <>
-      <div className="rw-segment">
-        <header className="rw-segment-header">
-          <h2 className="rw-heading rw-heading-secondary">Book {book.id} Detail</h2>
-        </header>
-        <table className="rw-table">
-          <tbody>
-            <tr>
-              <th>Id</th>
-              <td>{book.id}</td>
-            </tr><tr>
-              <th>Isbn</th>
-              <td>{book.isbn}</td>
-            </tr><tr>
-              <th>Title</th>
-              <td>{book.title}</td>
-            </tr><tr>
-              <th>Cover image</th>
-              <td>{book.coverImage}</td>
-            </tr><tr>
-              <th>Blurb</th>
-              <td>{book.blurb}</td>
-            </tr><tr>
-              <th>Rating</th>
-              <td>{book.rating}</td>
-            </tr><tr>
-              <th>Shelf id</th>
-              <td>{book.shelfId}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div className="absolute inset-0 -z-10 h-32 overflow-hidden opacity-40">
+        <img
+          src={book.coverImage}
+          alt={book.title}
+          className="h-full w-full scale-110 object-cover object-center blur"
+        />
       </div>
-      <nav className="rw-button-group">
-        <Link
-          to={routes.editBook({ id: book.id })}
-          className="rw-button rw-button-blue"
-        >
-          Edit
-        </Link>
-        <button
-          type="button"
-          className="rw-button rw-button-red"
-          onClick={() => onDeleteClick(book.id)}
-        >
-          Delete
-        </button>
-      </nav>
+      <div>
+        <div className="flex w-full gap-6">
+          <img
+            src={book.coverImage}
+            alt={book.title}
+            className="aspect-[2/3] h-72 rounded-xl object-cover"
+          />
+          <header className="my-4 flex flex-1 flex-col">
+            <nav className="mt-4 flex flex-1 gap-4 self-end">
+              <button
+                type="button"
+                className="btn btn-outline"
+                onClick={() => onDeleteClick(book.id)}
+              >
+                Hapus
+              </button>
+              <Link to={routes.editBook({ id: book.id })} className="btn">
+                Edit
+              </Link>
+            </nav>
+            <h2 className="text-h2">{book.title}</h2>
+            <p className="mt-4 w-full">
+              {book.authors?.map((author) => author.name).join(', ')}
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {book.tags?.map((tag) => (
+                <div key={tag.name} className="badge">
+                  {tag.name}
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 flex gap-1">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <FaStar
+                  key={i}
+                  className={`text-lg ${
+                    i < book.rating ? 'text-neutral-content' : 'text-neutral'
+                  }`}
+                />
+              ))}
+            </div>
+          </header>
+        </div>
+        <div className="mt-4 grid grid-cols-3 gap-2">
+          <div className="rounded-box col-span-2 space-y-6 bg-base-100 bg-opacity-70 p-4">
+            <div>
+              <h3 className="font-bold text-gray-500">Deskripsi</h3>
+              <p>{book.blurb}</p>
+            </div>
+            <div>
+              <h3 className="font-bold text-gray-500">Notes</h3>
+            </div>
+          </div>
+          <div>
+            <div className="rounded-box space-y-3 bg-base-100 bg-opacity-70 p-4">
+              <p>
+                <span className="block text-sm text-gray-500">ISBN </span>
+                {book.isbn}
+              </p>
+              <p>
+                <span className="block text-sm text-gray-500">Rak </span>
+                {book.Shelf.name}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   )
 }

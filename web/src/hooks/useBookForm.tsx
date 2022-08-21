@@ -3,7 +3,6 @@ import { useEffect } from 'react'
 import { Book } from 'types/graphql'
 
 import { useForm } from '@redwoodjs/forms'
-import { navigate, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
@@ -20,7 +19,6 @@ const useBookForm = (book?: Book) => {
     useMutation(CREATE_BOOK_MUTATION, {
       onCompleted: () => {
         toast.success('Book created')
-        navigate(routes.books())
       },
       onError: (error) => {
         toast.error(error.message)

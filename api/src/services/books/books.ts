@@ -8,8 +8,16 @@ import { validateWith } from '@redwoodjs/api'
 
 import { db } from 'src/lib/db'
 
-export const books: QueryResolvers['books'] = () => {
-  return db.book.findMany()
+export const books: QueryResolvers['booksByUserUid'] = ({ userUid }) => {
+  return db.book.findMany({
+    take: 24,
+    where: {
+      Shelf: {
+        userUid: { equals: userUid },
+      },
+    },
+    orderBy: [{ title: 'asc' }],
+  })
 }
 
 export const book: QueryResolvers['book'] = ({ id }) => {

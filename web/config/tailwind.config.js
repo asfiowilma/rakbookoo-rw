@@ -4,5 +4,12 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [require('daisyui')],
+  variants: {
+    scrollbar: ['dark', 'rounded'],
+  },
+  plugins: [
+    require('daisyui'),
+    require('@tailwindcss/line-clamp'),
+    require('tailwind-scrollbar'),
+  ],
 }

@@ -4,10 +4,22 @@
 
 @layer base {
   .text-h1 {
-    @apply text-5xl font-bold leading-snug
+    @apply text-5xl font-bold leading-snug;
   }
 
   .text-h2 {
-    @apply text-3xl font-bold leading-snug
+    @apply text-3xl font-bold leading-snug;
+  }
+}
+
+@layer utilities {
+  ::-webkit-scrollbar-thumb {
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-track {
+    border-radius: 99px;
+  }
+  .rak-scrollbar {
+    @apply scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700 dark:scrollbar-track-gray-800 dark:scrollbar-thumb-gray-900;
   }
 }

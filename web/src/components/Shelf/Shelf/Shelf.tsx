@@ -1,11 +1,10 @@
-import humanize from 'humanize-string'
-
 import { Link, routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import useBookForm from 'src/hooks/useBookForm'
 
+import BookThumbnail from '../../Book/Book/BookThumbnail'
 import BookForm from '../../Book/BookForm/BookForm'
 
 const DELETE_SHELF_MUTATION = gql`
@@ -15,39 +14,6 @@ const DELETE_SHELF_MUTATION = gql`
     }
   }
 `
-const formatEnum = (values: string | string[] | null | undefined) => {
-  if (values) {
-    if (Array.isArray(values)) {
-      const humanizedValues = values.map((value) => humanize(value))
-      return humanizedValues.join(', ')
-    } else {
-      return humanize(values as string)
-    }
-  }
-}
-
-const jsonDisplay = (obj) => {
-  return (
-    <pre>
-      <code>{JSON.stringify(obj, null, 2)}</code>
-    </pre>
-  )
-}
-
-const timeTag = (datetime) => {
-  return (
-    datetime && (
-      <time dateTime={datetime} title={datetime}>
-        {new Date(datetime).toUTCString()}
-      </time>
-    )
-  )
-}
-
-const checkboxInputTag = (checked) => {
-  return <input type="checkbox" checked={checked} disabled />
-}
-
 const Shelf = ({ shelf }) => {
   console.log('🚀 ~ file: Shelf.tsx ~ line 61 ~ Shelf ~ shelf', shelf)
   const {
@@ -120,7 +86,11 @@ const Shelf = ({ shelf }) => {
           Delete
         </button>
       </nav>
-      {shelf?.books.map((book) => jsonDisplay(book))}
+      <div className="mx-auto grid max-w-screen-lg grid-cols-6 gap-4">
+        {shelf?.books.map((book) => (
+          <BookThumbnail key={book.id} {...{ book }} />
+        ))}
+      </div>
       <BookForm
         {...{ formMethods, control, watch, setValue, onSave }}
         loading={isCreateLoading}
