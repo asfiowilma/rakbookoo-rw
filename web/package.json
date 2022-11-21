@@ -13,10 +13,10 @@
     ]
   },
   "dependencies": {
-    "@redwoodjs/auth": "2.2.0",
-    "@redwoodjs/forms": "2.2.0",
-    "@redwoodjs/router": "2.2.0",
-    "@redwoodjs/web": "2.2.0",
+    "@redwoodjs/auth": "^3.4.0",
+    "@redwoodjs/forms": "^3.4.0",
+    "@redwoodjs/router": "^3.4.0",
+    "@redwoodjs/web": "^3.4.0",
     "@supabase/supabase-js": "^1.35.6",
     "@tailwindcss/line-clamp": "^0.4.0",
     "daisyui": "^2.24.0",
