@@ -16,7 +16,7 @@ const BookModal = () => {
       <div
         aria-hidden
         onClick={(e) => e.stopPropagation()}
-        className="modal-box relative max-w-screen-md pr-0 sm:rounded-b-box"
+        className="modal-box relative m-4 max-w-screen-md pr-0 sm:rounded-b-box"
       >
         <button
           className="btn btn-circle btn-sm absolute right-2 top-2"

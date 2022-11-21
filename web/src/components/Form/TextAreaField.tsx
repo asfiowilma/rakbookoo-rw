@@ -9,6 +9,7 @@ const RakTextAreaField = ({
   label,
   validation,
   defaultValue,
+  placeholder,
   cols,
   rows,
   inputRef,
@@ -18,17 +19,17 @@ const RakTextAreaField = ({
       {label && (
         <Label
           name={name}
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
+          className="rw-label label"
+          errorClassName="label rw-label rw-label-error"
         >
           {label}
         </Label>
       )}
       <TextAreaField
         ref={inputRef}
-        className="rw-input"
+        className="rw-input textarea textarea-bordered"
         errorClassName="rw-input rw-input-error"
-        {...{ name, defaultValue, validation, cols, rows }}
+        {...{ name, placeholder, defaultValue, validation, cols, rows }}
       />
       <FieldError name={name} className="rw-field-error" />
     </>

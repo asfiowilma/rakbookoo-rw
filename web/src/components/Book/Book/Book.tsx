@@ -1,8 +1,10 @@
-import { FaStar } from 'react-icons/fa'
+import { FaStar, FaPlus, FaTrash, FaEdit, FaPencilAlt } from 'react-icons/fa'
 
 import { Link, routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
+import NoteForm from '../NoteForm/NoteForm'
+import { useState } from 'react'
 
 const DELETE_BOOK_MUTATION = gql`
   mutation DeleteBookMutation($id: Int!) {
@@ -28,6 +30,8 @@ const Book = ({ book }) => {
       deleteBook({ variables: { id } })
     }
   }
+
+  const [isNoteFormOpen, setIsNoteFormOpen] = useState(false)
 
   return (
     <>
@@ -88,7 +92,48 @@ const Book = ({ book }) => {
               <p>{book.blurb}</p>
             </div>
             <div>
-              <h3 className="font-bold text-gray-500">Notes</h3>
+              <h3 className="flex justify-between font-bold text-gray-500">
+                Notes
+                <button
+                  onClick={() => setIsNoteFormOpen(true)}
+                  className={`btn btn-sm gap-1 transition ease-in-out ${
+                    isNoteFormOpen ? 'opacity-0' : 'opacity-100'
+                  }`}
+                >
+                  <FaPlus /> tambah note
+                </button>
+              </h3>
+              <div
+                key="note-form"
+                className={`overflow-hidden transition-all ease-in-out ${
+                  isNoteFormOpen ? 'h-42 opacity-100' : 'h-0 opacity-0'
+                }`}
+              >
+                <NoteForm onCancel={() => setIsNoteFormOpen(false)} />
+              </div>
+              <div className="space-y-2 py-2">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="card-compact card bg-base-200">
+                    <div className="card-body">
+                      <div className="flex justify-between font-bold">
+                        <span>12 November 2022, 22:12</span>{' '}
+                        <div>
+                          <div className="btn btn-ghost btn-square btn-sm text-error">
+                            <FaTrash />
+                          </div>
+                          <div className="btn btn-ghost btn-square btn-sm">
+                            <FaPencilAlt />
+                          </div>
+                        </div>
+                      </div>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Et quae cum expedita consequatur magni! Modi iusto
+                      distinctio nostrum minus laborum tenetur. Iure reiciendis
+                      fuga aliquam molestias necessitatibus cumque nulla eos?
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
           <div>
