@@ -1,19 +1,23 @@
 import { useState } from 'react'
 
 import { useAuth } from '@redwoodjs/auth'
-import { Link, routes } from '@redwoodjs/router'
+import { Link, navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import BookModal from 'src/components/Book/Book/BookModal'
 import LibraryCell from 'src/components/LibraryCell'
 
 const HomePage = () => {
-  const { isAuthenticated, currentUser, logOut } = useAuth()
+  const auth = useAuth()
+  console.log('🚀 ~ file: HomePage.tsx ~ line 12 ~ HomePage ~ auth', auth)
+  const { isAuthenticated, currentUser, logOut } = auth
+
+  if (!isAuthenticated) navigate(routes.login())
+
   return (
-    <div className="mx-auto flex  flex-col items-start py-16 lg:max-w-screen-lg xl:max-w-screen-xl">
+    <>
       <MetaTags title="Home" description="Home page" />
 
-      {isAuthenticated && <button onClick={logOut}>Log out</button>}
       <div className="breadcrumbs text-sm">
         <ul>
           <li>
@@ -25,11 +29,11 @@ const HomePage = () => {
         </ul>
       </div>
       <h1 className="text-h1 mb-8">My Library</h1>
-      <div className="grid grid-cols-6 gap-6">
+      <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 lg:grid-cols-6">
         <LibraryCell userUid={currentUser?.sub} />
       </div>
       <BookModal />
-    </div>
+    </>
   )
 }
 
