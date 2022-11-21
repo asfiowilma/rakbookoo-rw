@@ -18,3 +18,10 @@ type BaseItemInput = {
 type AuthorInput = BaseItemInput
 
 type TagInput = BaseItemInput
+
+type Note = {
+  id?: number
+  createdAt?: string
+  content: string
+  bookId: number
+}

@@ -1,10 +1,12 @@
-import { FaStar, FaPlus, FaTrash, FaEdit, FaPencilAlt } from 'react-icons/fa'
+import { FaStar, FaPlus, FaTrash, FaPencilAlt } from 'react-icons/fa'
 
 import { Link, routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
-import NoteForm from '../NoteForm/NoteForm'
+import NoteForm from '../../Note/NoteForm'
 import { useState } from 'react'
+import moment from 'src/utils/moment'
+import Note from 'src/components/Note/Note'
 
 const DELETE_BOOK_MUTATION = gql`
   mutation DeleteBookMutation($id: Int!) {
@@ -109,30 +111,23 @@ const Book = ({ book }) => {
                   isNoteFormOpen ? 'h-42 opacity-100' : 'h-0 opacity-0'
                 }`}
               >
-                <NoteForm onCancel={() => setIsNoteFormOpen(false)} />
+                <NoteForm
+                  key={book.id}
+                  bookId={book.id}
+                  onCancel={() => setIsNoteFormOpen(false)}
+                />
               </div>
               <div className="space-y-2 py-2">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="card-compact card bg-base-200">
-                    <div className="card-body">
-                      <div className="flex justify-between font-bold">
-                        <span>12 November 2022, 22:12</span>{' '}
-                        <div>
-                          <div className="btn btn-ghost btn-square btn-sm text-error">
-                            <FaTrash />
-                          </div>
-                          <div className="btn btn-ghost btn-square btn-sm">
-                            <FaPencilAlt />
-                          </div>
-                        </div>
-                      </div>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Et quae cum expedita consequatur magni! Modi iusto
-                      distinctio nostrum minus laborum tenetur. Iure reiciendis
-                      fuga aliquam molestias necessitatibus cumque nulla eos?
+                {book.notes.map((note) => (
+                  <Note key={note.id} {...note} />
+                ))}
+                {!book.notes.length && (
+                  <div className="card card-compact bg-base-200">
+                    <div className="card-body text-center">
+                      Belum ada catatan.
                     </div>
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </div>

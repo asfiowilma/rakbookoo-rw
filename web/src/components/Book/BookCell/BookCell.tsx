@@ -22,6 +22,11 @@ export const QUERY = gql`
       tags {
         name
       }
+      notes {
+        content
+        createdAt
+        id
+      }
     }
   }
 `
