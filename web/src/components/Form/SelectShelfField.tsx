@@ -16,7 +16,6 @@ export const SHELF_OPTIONS_QUERY = gql`
     }
   }
 `
-
 const SelectShelfField = ({
   defaultValue,
   setValue,

@@ -9,7 +9,6 @@ import LibraryCell from 'src/components/LibraryCell'
 
 const HomePage = () => {
   const auth = useAuth()
-  console.log('🚀 ~ file: HomePage.tsx ~ line 12 ~ HomePage ~ auth', auth)
   const { isAuthenticated, currentUser, logOut } = auth
 
   if (!isAuthenticated) navigate(routes.login())

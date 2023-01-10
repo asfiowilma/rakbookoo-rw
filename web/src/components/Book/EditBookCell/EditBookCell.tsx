@@ -6,23 +6,11 @@ import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import BookForm from 'src/components/Book/BookForm'
+import { UPDATE_BOOK_MUTATION } from '../mutations'
 
 export const QUERY = gql`
   query EditBookById($id: Int!) {
-    book: book(id: $id) {
-      id
-      isbn
-      title
-      coverImage
-      blurb
-      rating
-      shelfId
-    }
-  }
-`
-const UPDATE_BOOK_MUTATION = gql`
-  mutation UpdateBookMutation($id: Int!, $input: UpdateBookInput!) {
-    updateBook(id: $id, input: $input) {
+    book(id: $id) {
       id
       isbn
       title

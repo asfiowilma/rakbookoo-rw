@@ -14,20 +14,19 @@ import {
 import NumberField from 'src/components/Form/NumberField'
 import TextAreaField from 'src/components/Form/TextAreaField'
 import TextField from 'src/components/Form/TextField'
-
-import SelectAuthorField from './SelectAuthorField'
-import SelectShelfField from './SelectShelfField'
-import SelectTagField from './SelectTagField'
+import SelectAuthorField from 'src/components/Form/SelectAuthorField'
+import SelectShelfField from 'src/components/Form/SelectShelfField'
+import SelectTagField from 'src/components/Form/SelectTagField'
 
 interface BookFormProps {
   book?: BookInputData
   onSave: CallableFunction
   error: RWGqlError
   loading: boolean
-  formMethods: UseFormReturn<BookInputData, object>
-  control: Control<BookInputData, object>
-  setValue: UseFormSetValue<BookInputData>
-  watch: UseFormWatch<BookInputData>
+  formMethods?: UseFormReturn<BookInputData, object>
+  control?: Control<BookInputData, object>
+  setValue?: UseFormSetValue<BookInputData>
+  watch?: UseFormWatch<BookInputData>
   shelfId: number
 }
 
@@ -48,11 +47,11 @@ const BookForm = ({
   }
 
   useEffect(() => {
-    if (shelfId) setValue('shelfId', shelfId)
+    if (shelfId) setValue && setValue('shelfId', shelfId)
   }, [shelfId])
 
   return (
-    <div className="rw-form-wrapper">
+    <div>
       <Form {...{ formMethods, onSubmit, error }}>
         <FormError
           error={error}

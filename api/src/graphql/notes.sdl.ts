@@ -19,7 +19,7 @@ export const schema = gql`
 
   input UpdateNoteInput {
     content: String
-    bookId: Int
+    id: Int
   }
 
   type Mutation {

@@ -1,9 +1,8 @@
-import type { FindBooks } from 'types/graphql'
-
 import { Link, routes } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import Books from 'src/components/Book/Books'
+import { FindBooks } from 'types/graphql'
 
 export const QUERY = gql`
   query FindBooks {
@@ -25,10 +24,7 @@ export const Empty = () => {
   return (
     <div className="rw-text-center">
       {'No books yet. '}
-      <Link
-        to={routes.newBook()}
-        className="rw-link"
-      >
+      <Link to={routes.newBook()} className="rw-link">
         {'Create one?'}
       </Link>
     </div>

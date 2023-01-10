@@ -6,7 +6,7 @@ import { useQuery } from '@redwoodjs/web'
 
 import CreatableSelectField from 'src/components/Form/CreatableSelectField'
 
-export const QUERY = gql`
+export const AUTHOR_OPTIONS_QUERY = gql`
   query FindAuthors {
     authors {
       id
@@ -14,12 +14,11 @@ export const QUERY = gql`
     }
   }
 `
-
 const SelectAuthorField = ({
   defaultValue,
   setValue,
 }: RakSelectFormProps<AuthorInput[]>) => {
-  const { data } = useQuery(QUERY)
+  const { data } = useQuery(AUTHOR_OPTIONS_QUERY)
   const [options, setOptions] = useState<Array<SelectOptionProps>>([])
 
   useEffect(() => {
@@ -41,21 +40,17 @@ const SelectAuthorField = ({
     setValue('authors', selectedAuthors)
   }
 
-  return (
-    <div>
-      {data && (
-        <CreatableSelectField
-          isMulti
-          id="authors"
-          options={options}
-          name="authors"
-          label="Author(s)"
-          defaultValue={defaultValue.map((val) => val.id)}
-          onChange={onChange}
-        />
-      )}
-    </div>
-  )
+  return data ? (
+    <CreatableSelectField
+      isMulti
+      id="authors"
+      options={options}
+      name="authors"
+      label="Author(s)"
+      defaultValue={defaultValue.map((val) => val.id)}
+      onChange={onChange}
+    />
+  ) : null
 }
 
 export default SelectAuthorField

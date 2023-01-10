@@ -1,4 +1,4 @@
 import m from 'moment'
 
-const moment = (a?: string | Date) => m().locale('id')
+const moment: m.Moment = m().locale('id')
 export default moment

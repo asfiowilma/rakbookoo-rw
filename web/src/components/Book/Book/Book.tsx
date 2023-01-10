@@ -1,20 +1,12 @@
-import { FaStar, FaPlus, FaTrash, FaPencilAlt } from 'react-icons/fa'
+import { FaStar, FaPlus } from 'react-icons/fa'
 
 import { Link, routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 import NoteForm from '../../Note/NoteForm'
 import { useState } from 'react'
-import moment from 'src/utils/moment'
 import Note from 'src/components/Note/Note'
-
-const DELETE_BOOK_MUTATION = gql`
-  mutation DeleteBookMutation($id: Int!) {
-    deleteBook(id: $id) {
-      id
-    }
-  }
-`
+import { DELETE_BOOK_MUTATION } from '../mutations'
 
 const Book = ({ book }) => {
   const [deleteBook] = useMutation(DELETE_BOOK_MUTATION, {

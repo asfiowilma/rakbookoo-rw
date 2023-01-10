@@ -3,14 +3,7 @@ import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import BookForm from 'src/components/Book/BookForm'
-
-const CREATE_BOOK_MUTATION = gql`
-  mutation CreateBookMutation($input: CreateBookInput!) {
-    createBook(input: $input) {
-      id
-    }
-  }
-`
+import { CREATE_BOOK_MUTATION } from '../mutations'
 
 const NewBook = () => {
   const [createBook, { loading, error }] = useMutation(CREATE_BOOK_MUTATION, {
@@ -29,14 +22,14 @@ const NewBook = () => {
   }
 
   return (
-    <div className="rw-segment">
-      <header className="rw-segment-header">
-        <h2 className="rw-heading rw-heading-secondary">New Book</h2>
+    <>
+      <header className="prose">
+        <h1 className="text-h1">Buku Baru</h1>
       </header>
-      <div className="rw-segment-main">
+      <div>
         <BookForm onSave={onSave} loading={loading} error={error} shelfId={0} />
       </div>
-    </div>
+    </>
   )
 }
 

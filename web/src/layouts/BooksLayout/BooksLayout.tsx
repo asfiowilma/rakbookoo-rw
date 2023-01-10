@@ -1,11 +1,12 @@
-import { Link, routes } from '@redwoodjs/router'
+import { routes } from '@redwoodjs/router'
+import AppLayout from '../AppLayout'
 type BookLayoutProps = {
   children: React.ReactNode
 }
 
 const BooksLayout = ({ children }: BookLayoutProps) => {
   return (
-    <div className="mx-auto py-16 lg:max-w-screen-lg">
+    <AppLayout>
       <div className="breadcrumbs text-sm">
         <ul>
           <li>
@@ -28,7 +29,7 @@ const BooksLayout = ({ children }: BookLayoutProps) => {
         </Link>
       </header> */}
       <main className="w-full">{children}</main>
-    </div>
+    </AppLayout>
   )
 }
 

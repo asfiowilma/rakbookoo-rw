@@ -1,4 +1,4 @@
-import { Form, FormError } from '@redwoodjs/forms'
+import { Form, FormError, useForm } from '@redwoodjs/forms'
 
 import TextAreaField from 'src/components/Form/TextAreaField'
 import { toast } from '@redwoodjs/web/toast'
@@ -12,11 +12,14 @@ interface NoteFormProps {
 }
 
 const NoteForm = ({ note, bookId, onCancel }: NoteFormProps) => {
+  const formMethods = useForm({ defaultValues: note })
   const [postNote, { loading, error }] = useMutation(
     note ? UPDATE_NOTE_MUTATION : CREATE_NOTE_MUTATION,
     {
       onCompleted: () => {
         toast.success(`Note berhasil ${note ? 'diupdate' : 'dibuat'}.`)
+        formMethods.reset()
+        onCancel()
       },
       onError: (error) => {
         toast.error(error.message)
@@ -25,16 +28,15 @@ const NoteForm = ({ note, bookId, onCancel }: NoteFormProps) => {
   )
 
   const onSubmit = (data) => {
-    const noteData = { ...(note ?? { bookId }), ...data }
-    console.log(
-      '🚀 ~ file: NoteForm.tsx ~ line 28 ~ onSubmit ~ noteData',
-      noteData
-    )
-    postNote({ variables: { id: note?.id, input: noteData } })
+    const noteData = { id: note?.id, bookId: bookId, ...data }
+    postNote({
+      variables: { id: note?.id, input: noteData },
+      refetchQueries: ['FindBookById'],
+    })
   }
 
   return (
-    <Form {...{ onSubmit, error }} className="flex flex-col gap-2">
+    <Form {...{ onSubmit, error, formMethods }} className="flex flex-col gap-2">
       <FormError
         error={error}
         wrapperClassName="rw-form-error-wrapper"
@@ -44,6 +46,7 @@ const NoteForm = ({ note, bookId, onCancel }: NoteFormProps) => {
       <TextAreaField
         name="content"
         placeholder="Masukkan catatan"
+        validation={{ required: true }}
         defaultValue={note?.content}
       />
       <div className="space-x-2 self-end">

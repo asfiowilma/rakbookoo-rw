@@ -5,8 +5,7 @@ import { RakSelectFormProps, SelectOptionProps } from 'types/form'
 import { useQuery } from '@redwoodjs/web'
 
 import CreatableSelectField from 'src/components/Form/CreatableSelectField'
-
-export const QUERY = gql`
+export const TAG_OPTIONS_QUERY = gql`
   query FindTags {
     tags {
       id
@@ -14,12 +13,11 @@ export const QUERY = gql`
     }
   }
 `
-
 const SelectTagField = ({
   setValue,
   defaultValue,
 }: RakSelectFormProps<TagInput[]>) => {
-  const { data } = useQuery(QUERY)
+  const { data } = useQuery(TAG_OPTIONS_QUERY)
   const [options, setOptions] = useState<Array<SelectOptionProps>>([])
 
   useEffect(() => {
@@ -39,21 +37,17 @@ const SelectTagField = ({
     setValue('tags', selectedTags)
   }
 
-  return (
-    <div>
-      {data && (
-        <CreatableSelectField
-          isMulti
-          id="tags"
-          options={options}
-          name="tags"
-          label="Tag(s)"
-          defaultValue={defaultValue.map((val) => val.id)}
-          onChange={onChange}
-        />
-      )}
-    </div>
-  )
+  return data ? (
+    <CreatableSelectField
+      isMulti
+      id="tags"
+      options={options}
+      name="tags"
+      label="Tag(s)"
+      defaultValue={defaultValue.map((val) => val.id)}
+      onChange={onChange}
+    />
+  ) : null
 }
 
 export default SelectTagField
