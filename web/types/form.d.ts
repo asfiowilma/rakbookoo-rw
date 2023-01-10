@@ -27,6 +27,7 @@ interface RakInputProps {
   rightAdornment?: ReactNode
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   inputRef?: MutableRefObject<any>
+  className?: string
 }
 
 interface RakSelectFieldProps<T = unknown>

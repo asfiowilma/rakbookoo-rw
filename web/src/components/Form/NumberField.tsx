@@ -16,8 +16,8 @@ const RakNumberField = ({
       {label && (
         <Label
           name={name}
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
+          className="label label-text"
+          errorClassName="label label-text label-error"
         >
           {label}
         </Label>

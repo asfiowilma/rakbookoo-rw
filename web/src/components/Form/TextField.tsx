@@ -13,14 +13,15 @@ const RakTextField = ({
   inputRef,
   leftAdornment,
   rightAdornment,
+  className,
 }: RakInputProps) => {
   return (
-    <div className="form-control">
+    <div className={'form-control ' + className}>
       {label && (
         <Label
           name={name}
-          className="label"
-          errorClassName="label rw-label-error"
+          className="label label-text"
+          errorClassName="label label-text label-error"
         >
           {label}
         </Label>

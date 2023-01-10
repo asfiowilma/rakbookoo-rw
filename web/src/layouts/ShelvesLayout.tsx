@@ -1,4 +1,7 @@
-import { Link, routes, useParams } from '@redwoodjs/router'
+import { Link, routes, useLocation, useParams } from '@redwoodjs/router'
+import Avatar from 'boring-avatars'
+import ShelfThumbnail from 'src/components/Shelf/ShelfThumbnail'
+import { useShelfStore } from 'src/hooks/useShelfStore'
 import AppLayout from './AppLayout'
 
 type ShelfLayoutProps = {
@@ -6,21 +9,42 @@ type ShelfLayoutProps = {
 }
 
 const ShelvesLayout = ({ children }: ShelfLayoutProps) => {
-  const { id } = useParams()
-  console.log('🚀 ~ file: ShelvesLayout.tsx:10 ~ ShelvesLayout ~ id', id)
+  const { pathname } = useLocation()
+  console.log(
+    '🚀 ~ file: ShelvesLayout.tsx:11 ~ ShelvesLayout ~ pathname',
+    pathname
+  )
+  const { shelfId, shelfName } = useShelfStore()
 
   return (
     <AppLayout>
       <div className="breadcrumbs text-sm">
         <ul>
           <li>
-            <a href={routes.shelves()} className="link link-hover">
+            <Link to={routes.shelves()} className="link link-hover">
               Rakbookoo
-            </a>
+            </Link>
           </li>
-          {id ? <li>Nama Rak</li> : <li>Rak Saya</li>}
+          {shelfId ? (
+            <li>
+              <Link
+                to={routes.shelf({ id: shelfId })}
+                className="link link-hover"
+              >
+                {shelfName}
+              </Link>
+            </li>
+          ) : (
+            <li>Rak Saya</li>
+          )}
+          {pathname.endsWith('edit') && <li>Edit</li>}
         </ul>
       </div>
+      {pathname.endsWith('edit') && (
+        <h1 className="text-h1 mb-8 flex items-start gap-3">
+          Edit {shelfName}
+        </h1>
+      )}
       <main className="w-full">{children}</main>
     </AppLayout>
   )

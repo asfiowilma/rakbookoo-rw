@@ -3,6 +3,8 @@ import type { FindShelfById } from 'types/graphql'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import Shelf from 'src/components/Shelf/Shelf'
+import { useEffect } from 'react'
+import { useShelfStore } from '../../../hooks/useShelfStore'
 
 export const QUERY = gql`
   query FindShelfById($id: Int!) {
@@ -37,5 +39,11 @@ export const Failure = ({ error }: CellFailureProps) => (
 )
 
 export const Success = ({ shelf }: CellSuccessProps<FindShelfById>) => {
+  const { setShelf } = useShelfStore()
+
+  useEffect(() => {
+    if (shelf) setShelf(shelf)
+  }, [shelf])
+
   return <Shelf shelf={shelf} />
 }

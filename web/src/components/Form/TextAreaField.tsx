@@ -19,8 +19,8 @@ const RakTextAreaField = ({
       {label && (
         <Label
           name={name}
-          className="label"
-          errorClassName="label rw-label-error"
+          className="label label-text"
+          errorClassName="label label-text label-error"
         >
           {label}
         </Label>

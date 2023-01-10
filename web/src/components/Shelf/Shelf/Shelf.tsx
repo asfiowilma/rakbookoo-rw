@@ -1,11 +1,14 @@
 import { Link, routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
+import { FaEdit, FaPencilAlt, FaTrash } from 'react-icons/fa'
+import BookModal, { Location } from 'src/components/Book/Book/BookModal'
 
 import useBookForm from 'src/hooks/useBookForm'
 
 import BookThumbnail from '../../Book/Book/BookThumbnail'
 import BookForm from '../../Book/BookForm/BookForm'
+import ShelfThumbnail from '../ShelfThumbnail'
 
 const DELETE_SHELF_MUTATION = gql`
   mutation DeleteShelfMutation($id: Int!) {
@@ -15,7 +18,6 @@ const DELETE_SHELF_MUTATION = gql`
   }
 `
 const Shelf = ({ shelf }) => {
-  console.log('🚀 ~ file: Shelf.tsx ~ line 61 ~ Shelf ~ shelf', shelf)
   const {
     createBook,
     isCreateLoading,
@@ -48,55 +50,34 @@ const Shelf = ({ shelf }) => {
 
   return (
     <>
-      <div className="rw-segment">
-        <header className="rw-segment-header">
-          <h2 className="rw-heading rw-heading-secondary">
-            Shelf {shelf.id} Detail
-          </h2>
-        </header>
-        <table className="rw-table">
-          <tbody>
-            <tr>
-              <th>Id</th>
-              <td>{shelf.id}</td>
-            </tr>
-            <tr>
-              <th>Name</th>
-              <td>{shelf.name}</td>
-            </tr>
-            <tr>
-              <th>User uid</th>
-              <td>{shelf.userUid}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div className="flex justify-between">
+        <h1 className="text-h1 mb-8 flex items-start gap-3">
+          <ShelfThumbnail size={72} name={shelf.name} className="flex-none" />
+          {shelf.name}
+        </h1>
+        <div>
+          <div
+            className="btn btn-square btn-ghost btn-sm text-error"
+            onClick={() => onDeleteClick(shelf.id)}
+            title="Hapus rak"
+          >
+            <FaTrash />
+          </div>
+          <Link
+            to={routes.editShelf({ id: shelf.id })}
+            className="btn btn-square btn-ghost btn-sm"
+            title="Edit rak"
+          >
+            <FaPencilAlt />
+          </Link>
+        </div>
       </div>
-      <nav className="rw-button-group">
-        <Link
-          to={routes.editShelf({ id: shelf.id })}
-          className="rw-button rw-button-blue"
-        >
-          Edit
-        </Link>
-        <button
-          type="button"
-          className="rw-button rw-button-red"
-          onClick={() => onDeleteClick(shelf.id)}
-        >
-          Delete
-        </button>
-      </nav>
       <div className="mx-auto grid max-w-screen-lg grid-cols-6 gap-4">
         {shelf?.books.map((book) => (
           <BookThumbnail key={book.id} {...{ book }} />
         ))}
       </div>
-      <BookForm
-        {...{ formMethods, control, watch, setValue, onSave }}
-        loading={isCreateLoading}
-        error={createError}
-        shelfId={shelf.id}
-      />
+      <BookModal location={Location.shelf} shelfId={shelf.id} />
     </>
   )
 }

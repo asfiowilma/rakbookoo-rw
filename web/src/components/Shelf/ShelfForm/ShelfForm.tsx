@@ -1,15 +1,13 @@
 import { useAuth } from '@redwoodjs/auth'
-import {
-  Form,
-  FormError,
-  FieldError,
-  Label,
-  TextField,
-  Submit,
-  HiddenField,
-} from '@redwoodjs/forms'
+import TextField from 'src/components/Form/TextField'
+import { Form, FormError, Submit, HiddenField, useForm } from '@redwoodjs/forms'
+import ShelfThumbnail from '../ShelfThumbnail'
+import useDebounce from 'src/hooks/useDebounce'
 
 const ShelfForm = (props) => {
+  const formMethods = useForm()
+  const previewThumbnail = formMethods.watch('name', props?.shelf?.name ?? '')
+  const debouncedThumbnail: string = useDebounce<string>(previewThumbnail, 500)
   const { userMetadata: user } = useAuth()
 
   const onSubmit = (data) => {
@@ -17,42 +15,39 @@ const ShelfForm = (props) => {
   }
 
   return (
-    <div className="rw-form-wrapper">
-      <Form onSubmit={onSubmit} error={props.error}>
-        <FormError
-          error={props.error}
-          wrapperClassName="rw-form-error-wrapper"
-          titleClassName="rw-form-error-title"
-          listClassName="rw-form-error-list"
+    <Form
+      onSubmit={onSubmit}
+      formMethods={formMethods}
+      error={props.error}
+      className="rounded-box flex flex-col gap-4 bg-base-200 p-6"
+    >
+      <FormError
+        error={props.error}
+        wrapperClassName="rw-form-error-wrapper"
+        titleClassName="rw-form-error-title"
+        listClassName="rw-form-error-list"
+      />
+      <div className="flex items-center gap-4">
+        <ShelfThumbnail
+          size={72}
+          name={(debouncedThumbnail as string) ?? ''}
+          className="flex-none"
         />
-
-        <Label
-          name="name"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Name
-        </Label>
-
         <TextField
+          label="Nama Rak"
           name="name"
+          placeholder={`Masukkan nama rak ${!props?.shelf?.id ? 'baru' : ''}`}
           defaultValue={props.shelf?.name}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
           validation={{ required: true }}
+          className="flex-1"
         />
+      </div>
+      <HiddenField name="userUid" defaultValue={user.id} />
 
-        <FieldError name="name" className="rw-field-error" />
-
-        <HiddenField name="userUid" defaultValue={user.id} />
-
-        <div className="rw-button-group">
-          <Submit disabled={props.loading} className="rw-button rw-button-blue">
-            Save
-          </Submit>
-        </div>
-      </Form>
-    </div>
+      <Submit disabled={props.loading} className="btn btn-primary self-end">
+        Save
+      </Submit>
+    </Form>
   )
 }
 

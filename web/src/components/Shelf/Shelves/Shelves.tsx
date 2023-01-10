@@ -6,6 +6,7 @@ import { QUERY } from 'src/components/Shelf/ShelvesCell'
 import { FaEllipsisV, FaPencilAlt, FaTrash } from 'react-icons/fa'
 import Avatar from 'boring-avatars'
 import { BiBookHeart } from 'react-icons/bi'
+import ShelfThumbnail from '../ShelfThumbnail'
 
 const DELETE_SHELF_MUTATION = gql`
   mutation DeleteShelfMutation($id: Int!) {
@@ -52,17 +53,8 @@ const ShelvesList = ({ shelves }) => {
       className="rounded-box flex gap-3 overflow-visible bg-base-200 p-3"
       key={shelf.id}
     >
-      <Link
-        to={routes.shelf({ id: shelf.id })}
-        className="rounded-box flex-none overflow-hidden"
-      >
-        <Avatar
-          size={72}
-          name={shelf.name}
-          square
-          variant="beam"
-          colors={['#6419E6', '#732DFA', '#A083FF', '#BFB0FF', '#EBE7FF']}
-        />
+      <Link to={routes.shelf({ id: shelf.id })}>
+        <ShelfThumbnail size={72} name={shelf.name} />
       </Link>
       <div className="relative flex-1 space-y-2">
         <div className="flex items-baseline justify-between gap-2">
@@ -70,11 +62,7 @@ const ShelvesList = ({ shelves }) => {
             {truncate(shelf.name)}
           </Link>
           <div className="dropdown-bottom dropdown-end dropdown flex-none">
-            <label
-              onClick={(e) => e.stopPropagation()}
-              tabIndex={0}
-              className="btn btn-square btn-ghost btn-sm"
-            >
+            <label tabIndex={0} className="btn btn-square btn-ghost btn-sm">
               <FaEllipsisV />
             </label>
             <ul

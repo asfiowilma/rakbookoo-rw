@@ -1,11 +1,13 @@
 import type { EditShelfById } from 'types/graphql'
 
-import { navigate, routes } from '@redwoodjs/router'
+import { back } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import ShelfForm from 'src/components/Shelf/ShelfForm'
+import { useShelfStore } from 'src/hooks/useShelfStore'
+import { useEffect } from 'react'
 
 export const QUERY = gql`
   query EditShelfById($id: Int!) {
@@ -33,10 +35,16 @@ export const Failure = ({ error }: CellFailureProps) => (
 )
 
 export const Success = ({ shelf }: CellSuccessProps<EditShelfById>) => {
+  const { setShelf } = useShelfStore()
+
+  useEffect(() => {
+    if (shelf) setShelf(shelf)
+  }, [shelf])
+
   const [updateShelf, { loading, error }] = useMutation(UPDATE_SHELF_MUTATION, {
     onCompleted: () => {
-      toast.success('Shelf updated')
-      navigate(routes.shelves())
+      toast.success('Rak berhasil diperbarui~')
+      back()
     },
     onError: (error) => {
       toast.error(error.message)
@@ -48,13 +56,6 @@ export const Success = ({ shelf }: CellSuccessProps<EditShelfById>) => {
   }
 
   return (
-    <div className="rw-segment">
-      <header className="rw-segment-header">
-        <h2 className="rw-heading rw-heading-secondary">Edit Shelf {shelf.id}</h2>
-      </header>
-      <div className="rw-segment-main">
-        <ShelfForm shelf={shelf} onSave={onSave} error={error} loading={loading} />
-      </div>
-    </div>
+    <ShelfForm shelf={shelf} onSave={onSave} error={error} loading={loading} />
   )
 }

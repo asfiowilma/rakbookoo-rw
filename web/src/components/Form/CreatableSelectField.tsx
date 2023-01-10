@@ -40,7 +40,12 @@ const CreatableSelectField = ({
   return (
     <>
       {label && (
-        <Label name={name} className={labelClassName} style={labelStyle}>
+        <Label
+          name={name}
+          className="label label-text"
+          errorClassName="label label-text label-error"
+          style={labelStyle}
+        >
           {label}
         </Label>
       )}

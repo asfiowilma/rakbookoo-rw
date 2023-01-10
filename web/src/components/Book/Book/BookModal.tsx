@@ -3,17 +3,42 @@ import { useEffect } from 'react'
 import { useBookStore } from 'src/hooks/useBookStore'
 
 import BookCell from '../BookCell'
+import { useShelfStore } from '../../../hooks/useShelfStore'
 
-const BookModal = () => {
-  const { bookId, isBookModalOpen, setBookModalOpen } = useBookStore()
+const RESET_BOOK_ID = 0
+export enum Location {
+  library,
+  shelf,
+}
+
+const BookModal = ({
+  location,
+  shelfId,
+}: {
+  location: Location
+  shelfId?: number
+}) => {
+  const { bookId, isBookModalOpen, setBookModalOpen, setBookId } =
+    useBookStore()
+
+  const getBookRoute = (withBook: boolean = true) => {
+    const book = { book: bookId }
+    if (location == Location.library)
+      return routes.library(withBook ? book : {})
+    else if (location == Location.shelf)
+      return routes.shelf({ id: shelfId, ...(withBook ? book : {}) })
+  }
 
   useEffect(() => {
-    if (isBookModalOpen && bookId)
-      navigate(routes.library({ book: bookId }), { replace: true })
-    else navigate(routes.library(), { replace: true })
+    if (isBookModalOpen && bookId) navigate(getBookRoute(), { replace: true })
+    else navigate(getBookRoute(false), { replace: true })
   }, [bookId, isBookModalOpen])
 
-  const closeModal = () => setBookModalOpen(false)
+  const closeModal = () => {
+    setBookModalOpen(false)
+    setBookId(RESET_BOOK_ID)
+  }
+
   return bookId ? (
     <div
       aria-hidden

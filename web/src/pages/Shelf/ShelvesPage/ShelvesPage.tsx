@@ -23,15 +23,15 @@ const ShelvesPage = () => {
         <div className="flex items-center gap-2">
           <span>Tampilkan</span>
           <div className="tabs tabs-boxed">
+            <div key="SHELVES-TAB" className="tab tab-active transition">
+              Rak
+            </div>
             <div
               key="BOOKS-TAB"
               onClick={() => navigate(routes.library(), { replace: true })}
               className="tab transition"
             >
               Buku
-            </div>
-            <div key="SHELVES-TAB" className="tab tab-active transition">
-              Rak
             </div>
           </div>
         </div>

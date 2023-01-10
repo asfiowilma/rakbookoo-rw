@@ -19,8 +19,8 @@ const RakPasswordField = ({
       {label && (
         <Label
           name={name}
-          className="label"
-          errorClassName="rw-label rw-label-error"
+          className="label label-text"
+          errorClassName="label label-text label-error"
         >
           {label}
         </Label>

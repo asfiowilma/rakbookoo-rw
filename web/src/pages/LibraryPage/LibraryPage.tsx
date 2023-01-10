@@ -4,7 +4,7 @@ import { useAuth } from '@redwoodjs/auth'
 import { Link, navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
-import BookModal from 'src/components/Book/Book/BookModal'
+import BookModal, { Location } from 'src/components/Book/Book/BookModal'
 import LibraryCell from 'src/components/LibraryCell'
 
 const LibraryPage = () => {
@@ -31,15 +31,15 @@ const LibraryPage = () => {
         <div className="flex items-center gap-2">
           <span>Tampilkan</span>
           <div className="tabs tabs-boxed">
-            <div key="BOOKS-TAB" className="tab tab-active transition">
-              Buku
-            </div>
             <div
               key="SHELVES-TAB"
               onClick={() => navigate(routes.shelves(), { replace: true })}
               className="tab transition"
             >
               Rak
+            </div>
+            <div key="BOOKS-TAB" className="tab tab-active transition">
+              Buku
             </div>
           </div>
         </div>
@@ -48,7 +48,7 @@ const LibraryPage = () => {
       <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 lg:grid-cols-6">
         <LibraryCell />
       </div>
-      <BookModal />
+      <BookModal location={Location.library} />
     </>
   )
 }
