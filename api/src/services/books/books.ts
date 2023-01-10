@@ -1,3 +1,4 @@
+import { requireAuth } from 'src/lib/auth'
 import type {
   QueryResolvers,
   MutationResolvers,
@@ -8,12 +9,15 @@ import { validateWith } from '@redwoodjs/api'
 
 import { db } from 'src/lib/db'
 
-export const books: QueryResolvers['booksByUserUid'] = ({ userUid }) => {
+export const books: QueryResolvers['booksByUserUid'] = () => {
+  requireAuth()
+  console.log(context.currentUser)
+
   return db.book.findMany({
     take: 24,
     where: {
       Shelf: {
-        userUid: { equals: userUid },
+        userUid: { equals: context.currentUser.sub },
       },
     },
     orderBy: [{ title: 'asc' }],

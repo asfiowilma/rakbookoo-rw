@@ -6,8 +6,11 @@ import type {
 
 import { db } from 'src/lib/db'
 
-export const shelves: QueryResolvers['shelves'] = ({ userUid }) => {
-  return db.shelf.findMany({ where: { userUid } })
+export const shelves: QueryResolvers['shelves'] = () => {
+  return db.shelf.findMany({
+    where: { userUid: context.currentUser.sub },
+    orderBy: { id: 'asc' },
+  })
 }
 
 export const shelf: QueryResolvers['shelf'] = ({ id }) => {
@@ -40,7 +43,7 @@ export const deleteShelf: MutationResolvers['deleteShelf'] = ({ id }) => {
 
 export const Shelf: ShelfResolvers = {
   books: (_obj, { root }) =>
-    db.shelf.findUnique({ where: { id: root.id } }).books(),
+    db.shelf.findUnique({ where: { id: root.id } }).books({ take: _obj.limit }),
   User: (_obj, { root }) =>
     db.shelf.findUnique({ where: { id: root.id } }).User(),
 }

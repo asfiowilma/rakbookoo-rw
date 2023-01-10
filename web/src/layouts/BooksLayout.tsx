@@ -1,5 +1,5 @@
 import { routes } from '@redwoodjs/router'
-import AppLayout from '../AppLayout'
+import AppLayout from './AppLayout'
 type BookLayoutProps = {
   children: React.ReactNode
 }

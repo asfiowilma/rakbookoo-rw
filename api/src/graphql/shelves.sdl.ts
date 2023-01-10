@@ -2,15 +2,14 @@ export const schema = gql`
   type Shelf {
     id: Int!
     name: String!
-    books: [Book]!
+    books(limit: Int): [Book]!
     User: User
     userUid: String
   }
 
   type Query {
-    shelves(userUid: String!): [Shelf!]! @skipAuth
-    shelf(id: Int!): Shelf @skipAuth
-    shelfByUserUid(userUid: String!): Shelf @skipAuth
+    shelves: [Shelf!]! @requireAuth
+    shelf(id: Int!): Shelf! @requireAuth
   }
 
   input CreateShelfInput {

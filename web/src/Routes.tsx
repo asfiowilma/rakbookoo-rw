@@ -12,6 +12,7 @@ import { Set, Router, Route } from '@redwoodjs/router'
 import BooksLayout from 'src/layouts/BooksLayout'
 import ShelvesLayout from 'src/layouts/ShelvesLayout'
 import AppLayout from './layouts/AppLayout'
+import LibraryPage from './pages/LibraryPage/LibraryPage'
 
 const Routes = () => {
   return (
@@ -26,11 +27,12 @@ const Routes = () => {
         <Route path="/shelves/new" page={ShelfNewShelfPage} name="newShelf" />
         <Route path="/shelves/{id:Int}/edit" page={ShelfEditShelfPage} name="editShelf" />
         <Route path="/shelves/{id:Int}" page={ShelfShelfPage} name="shelf" />
-        <Route path="/shelves" page={ShelfShelvesPage} name="shelves" />
       </Set>
       <Set wrap={AppLayout}>
         <Route path="/profile" page={ProfilePage} name="profile" />
-        <Route path="/" page={HomePage} name="home" />
+        <Route path="/library" page={LibraryPage} name="library" />
+        <Route path="/shelves" page={ShelfShelvesPage} name="shelves" />
+        <Route path="/" page={LibraryPage} name="home" />
       </Set>
       <Route path="/login" page={LoginPage} name="login" />
       <Route path="/signup" page={SignupPage} name="signup" />

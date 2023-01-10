@@ -1,11 +1,20 @@
+import { navigate, routes } from '@redwoodjs/router'
+import { useEffect } from 'react'
 import { useBookStore } from 'src/hooks/useBookStore'
 
 import BookCell from '../BookCell'
 
 const BookModal = () => {
   const { bookId, isBookModalOpen, setBookModalOpen } = useBookStore()
+
+  useEffect(() => {
+    if (isBookModalOpen && bookId)
+      navigate(routes.library({ book: bookId }), { replace: true })
+    else navigate(routes.library(), { replace: true })
+  }, [bookId, isBookModalOpen])
+
   const closeModal = () => setBookModalOpen(false)
-  return (
+  return bookId ? (
     <div
       aria-hidden
       className={`modal modal-bottom sm:items-center ${
@@ -30,7 +39,7 @@ const BookModal = () => {
         </div>
       </div>
     </div>
-  )
+  ) : null
 }
 
 export default BookModal

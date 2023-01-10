@@ -6,11 +6,14 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import Shelves from 'src/components/Shelf/Shelves'
 
 export const QUERY = gql`
-  query FindShelves($userUid: String!) {
-    shelves(userUid: $userUid) {
+  query FindShelves {
+    shelves {
       id
       name
-      userUid
+      books(limit: 4) {
+        title
+        coverImage
+      }
     }
   }
 `

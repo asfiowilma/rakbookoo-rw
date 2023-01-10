@@ -14,9 +14,8 @@ export const schema = gql`
   }
 
   type Query {
-    books(limit: Int = 10, offset: Int = 0): [Book!]! @skipAuth
-    booksByUserUid(userUid: String!): [Book!]! @skipAuth
-    book(id: Int!): Book @skipAuth
+    books(limit: Int = 10, offset: Int = 0): [Book!]! @requireAuth
+    book(id: Int!): Book! @requireAuth
   }
 
   input CreateBookInput {
