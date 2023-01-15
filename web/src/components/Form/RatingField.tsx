@@ -11,6 +11,12 @@ const RatingField = ({ name, label }: RatingFieldProps) => {
     <>
       {label && <RakLabel name={name} label={label} />}
       <div className="rating rating-lg">
+        <RadioField
+          name={name}
+          id="unrated"
+          value={0}
+          className="mask mask-star-2 hidden"
+        />
         {Array.from({ length: 5 }).map((_, i) => (
           <RadioField
             name={name}

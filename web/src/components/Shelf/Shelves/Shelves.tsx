@@ -61,13 +61,13 @@ const ShelvesList = ({ shelves }) => {
           <Link to={routes.shelf({ id: shelf.id })} className="flex-1">
             {truncate(shelf.name)}
           </Link>
-          <div className="dropdown-bottom dropdown dropdown-end flex-none">
-            <label tabIndex={0} className="btn btn-ghost btn-square btn-sm">
+          <div className="dropdown-bottom dropdown-end dropdown flex-none">
+            <label tabIndex={0} className="btn btn-square btn-ghost btn-sm">
               <FaEllipsisV />
             </label>
             <ul
               tabIndex={0}
-              className="dropdown-content menu rounded-box w-52 bg-base-300 p-2 shadow"
+              className="dropdown-content menu rounded-box w-40 bg-base-300 p-2 shadow"
             >
               <li>
                 <Link

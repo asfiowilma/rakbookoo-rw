@@ -18,18 +18,19 @@ const BooksLayout = ({ children }: BookLayoutProps) => {
               Rakbookoo
             </Link>
           </li>
-          <li>
-            {book?.shelfId && (
+          {book?.shelfId && (
+            <li>
               <Link to={routes.shelf({ id: book.shelfId })}>
                 {book.Shelf.name}
               </Link>
-            )}
-          </li>
-          <li>
-            {book?.id && (
+            </li>
+          )}
+          {book?.id && (
+            <li>
               <Link to={routes.book({ id: book.id })}>{book.title}</Link>
-            )}
-          </li>
+            </li>
+          )}
+          {pathname.endsWith('new') && <li>Tambah Buku Baru</li>}
           {pathname.endsWith('edit') && <li>Edit</li>}
         </ul>
       </div>

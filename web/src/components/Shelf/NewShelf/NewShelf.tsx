@@ -1,4 +1,4 @@
-import { navigate, routes } from '@redwoodjs/router'
+import { back, navigate, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
@@ -32,14 +32,15 @@ const NewShelf = ({ userUid }: NewShelfProps) => {
   }
 
   return (
-    <div className="rw-segment">
-      <header className="rw-segment-header">
-        <h2 className="rw-heading rw-heading-secondary">New Shelf</h2>
-      </header>
-      <div className="rw-segment-main">
-        <ShelfForm onSave={onSave} loading={loading} error={error} />
+    <>
+      <div className="flex justify-between">
+        <h1 className="text-h1">Rak Baru</h1>
+        <button className="btn btn-ghost" onClick={back}>
+          Kembali
+        </button>
       </div>
-    </div>
+      <ShelfForm onSave={onSave} loading={loading} error={error} />
+    </>
   )
 }
 

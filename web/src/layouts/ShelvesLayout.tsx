@@ -34,6 +34,7 @@ const ShelvesLayout = ({ children }: ShelfLayoutProps) => {
             <li>Rak Saya</li>
           )}
           {pathname.endsWith('edit') && <li>Edit</li>}
+          {pathname.endsWith('new') && <li>Tambah Rak Baru</li>}
         </ul>
       </div>
       {pathname.endsWith('edit') && (

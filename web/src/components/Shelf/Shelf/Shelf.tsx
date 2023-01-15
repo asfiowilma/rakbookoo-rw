@@ -7,7 +7,6 @@ import BookModal, { Location } from 'src/components/Book/Book/BookModal'
 import useBookForm from 'src/hooks/useBookForm'
 
 import BookThumbnail from '../../Book/Book/BookThumbnail'
-import BookForm from '../../Book/BookForm/BookForm'
 import ShelfThumbnail from '../ShelfThumbnail'
 
 const DELETE_SHELF_MUTATION = gql`
@@ -72,6 +71,14 @@ const Shelf = ({ shelf }) => {
           </Link>
         </div>
       </div>
+      {shelf?.books.length === 0 && (
+        <div className="alert">
+          {'No books yet. '}
+          <Link to={routes.newBook()} className="btn btn-primary">
+            {'Create one?'}
+          </Link>
+        </div>
+      )}
       <div className="mx-auto grid max-w-screen-lg grid-cols-6 gap-4">
         {shelf?.books.map((book) => (
           <BookThumbnail key={book.id} {...{ book }} />

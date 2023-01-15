@@ -97,8 +97,8 @@ const BookForm = ({
         </div>
       </div>
       <div className="self-end">
-        <button className="btn btn-ghost" onClick={back}>
-          Kembali
+        <button type="button" className="btn btn-ghost" onClick={back}>
+          Batal
         </button>
         <Submit disabled={loading} className="btn btn-primary self-end">
           Simpan

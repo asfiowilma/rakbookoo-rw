@@ -1,8 +1,9 @@
 import { useAuth } from '@redwoodjs/auth'
-import { navigate, routes } from '@redwoodjs/router'
+import { navigate, routes, Link } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import ShelvesCell from 'src/components/Shelf/ShelvesCell'
+import { BiPlus } from 'react-icons/bi'
 
 const ShelvesPage = () => {
   return (
@@ -36,7 +37,13 @@ const ShelvesPage = () => {
           </div>
         </div>
       </div>
-      <h1 className="text-h1 mb-8">My Library</h1>
+      <div className="flex w-full justify-between">
+        <h1 className="text-h1 mb-8">My Library</h1>
+        <Link to={routes.newShelf()} className="btn mt-4 gap-2 pl-2">
+          <BiPlus className="h-6 w-6" />
+          Rak Baru
+        </Link>
+      </div>
       <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <ShelvesCell />
       </div>

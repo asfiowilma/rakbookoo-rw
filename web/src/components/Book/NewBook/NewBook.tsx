@@ -5,13 +5,13 @@ import { toast } from '@redwoodjs/web/toast'
 import BookForm from 'src/components/Book/BookForm'
 import { CREATE_BOOK_MUTATION } from '../mutations'
 import useBookForm from 'src/hooks/useBookForm'
+import { back } from '@redwoodjs/router'
 
 const NewBook = () => {
   const {
     createBook,
     isCreateLoading,
     createError,
-    control,
     watch,
     setValue,
     formMethods,
@@ -24,8 +24,11 @@ const NewBook = () => {
 
   return (
     <>
-      <header className="prose">
+      <header className="flex justify-between">
         <h1 className="text-h1">Buku Baru</h1>
+        <button className="btn btn-ghost" onClick={back}>
+          Kembali
+        </button>
       </header>
       <div>
         <BookForm
@@ -35,7 +38,6 @@ const NewBook = () => {
           formMethods={formMethods}
           setValue={setValue}
           watch={watch}
-          control={control}
           shelfId={0}
         />
       </div>

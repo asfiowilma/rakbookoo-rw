@@ -23,18 +23,18 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           </label>
           <ul
             tabIndex={0}
-            className="dropdown-content menu rounded-box w-60 bg-base-200 p-2 shadow"
+            className="dropdown-content menu rounded-box w-48 bg-base-200 p-2 shadow"
           >
-            <li>
-              <Link to={routes.newBook()}>
-                <BiPlus className="h-5 w-5" />
-                <span>Tambah Buku Baru</span>
-              </Link>
-            </li>
             <li>
               <Link to={routes.newShelf()}>
                 <BiPlus className="h-5 w-5" />
-                Tambah Rak Baru
+                Rak Baru
+              </Link>
+            </li>
+            <li>
+              <Link to={routes.newBook()}>
+                <BiPlus className="h-5 w-5" />
+                Buku Baru
               </Link>
             </li>
           </ul>

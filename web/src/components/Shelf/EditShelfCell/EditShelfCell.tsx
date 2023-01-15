@@ -56,6 +56,19 @@ export const Success = ({ shelf }: CellSuccessProps<EditShelfById>) => {
   }
 
   return (
-    <ShelfForm shelf={shelf} onSave={onSave} error={error} loading={loading} />
+    <>
+      <div className="flex justify-between">
+        <h2 className="text-h2">Edit Rak {shelf?.name}</h2>
+        <button className="btn btn-ghost" onClick={back}>
+          Kembali
+        </button>
+      </div>
+      <ShelfForm
+        shelf={shelf}
+        onSave={onSave}
+        error={error}
+        loading={loading}
+      />
+    </>
   )
 }
