@@ -2,7 +2,8 @@ import React from 'react'
 
 import { RakInputProps } from 'types/form'
 
-import { FieldError, Label, TextAreaField } from '@redwoodjs/forms'
+import { FieldError, TextAreaField } from '@redwoodjs/forms'
+import RakLabel from './Label'
 
 const RakTextAreaField = ({
   name,
@@ -16,15 +17,7 @@ const RakTextAreaField = ({
 }: RakInputProps) => {
   return (
     <>
-      {label && (
-        <Label
-          name={name}
-          className="label label-text"
-          errorClassName="label label-text label-error"
-        >
-          {label}
-        </Label>
-      )}
+      {label && <RakLabel name={name} label={label} />}
       <TextAreaField
         ref={inputRef}
         className="textarea textarea-bordered"

@@ -2,7 +2,8 @@ import React from 'react'
 
 import { RakInputProps } from 'types/form'
 
-import { FieldError, Label, NumberField } from '@redwoodjs/forms'
+import { FieldError, NumberField } from '@redwoodjs/forms'
+import RakLabel from './Label'
 
 const RakNumberField = ({
   name,
@@ -13,16 +14,7 @@ const RakNumberField = ({
 }: RakInputProps) => {
   return (
     <>
-      {label && (
-        <Label
-          name={name}
-          className="label label-text"
-          errorClassName="label label-text label-error"
-        >
-          {label}
-        </Label>
-      )}
-
+      {label && <RakLabel name={name} label={label} />}
       <NumberField
         ref={inputRef}
         className="rw-input"

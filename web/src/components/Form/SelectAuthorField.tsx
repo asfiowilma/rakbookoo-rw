@@ -14,10 +14,7 @@ export const AUTHOR_OPTIONS_QUERY = gql`
     }
   }
 `
-const SelectAuthorField = ({
-  defaultValue,
-  setValue,
-}: RakSelectFormProps<AuthorInput[]>) => {
+const SelectAuthorField = ({ setValue }: RakSelectFormProps<AuthorInput[]>) => {
   const { data } = useQuery(AUTHOR_OPTIONS_QUERY)
   const [options, setOptions] = useState<Array<SelectOptionProps>>([])
 
@@ -46,8 +43,8 @@ const SelectAuthorField = ({
       id="authors"
       options={options}
       name="authors"
-      label="Author(s)"
-      defaultValue={defaultValue.map((val) => val.id)}
+      label="Penulis"
+      placeholder="Masukkan penulis"
       onChange={onChange}
     />
   ) : null

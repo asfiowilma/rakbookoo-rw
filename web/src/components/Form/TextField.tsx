@@ -3,6 +3,7 @@ import React from 'react'
 import { RakInputProps } from 'types/form'
 
 import { FieldError, Label, TextField } from '@redwoodjs/forms'
+import RakLabel from './Label'
 
 const RakTextField = ({
   name,
@@ -17,15 +18,7 @@ const RakTextField = ({
 }: RakInputProps) => {
   return (
     <div className={'form-control ' + className}>
-      {label && (
-        <Label
-          name={name}
-          className="label label-text"
-          errorClassName="label label-text label-error"
-        >
-          {label}
-        </Label>
-      )}
+      {label && <RakLabel name={name} label={label} />}
       <div className={leftAdornment || rightAdornment ? 'input-group' : 'flex'}>
         {leftAdornment}
         <TextField

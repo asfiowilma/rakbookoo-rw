@@ -5,20 +5,26 @@ import { Book } from 'types/graphql'
 import { useForm } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
+import {
+  CREATE_BOOK_MUTATION,
+  UPDATE_BOOK_MUTATION,
+} from 'src/components/Book/mutations'
 
-const CREATE_BOOK_MUTATION = gql`
-  mutation CreateBookMutation($input: CreateBookInput!) {
-    createBook(input: $input) {
-      id
-    }
-  }
-`
-
-const useBookForm = (book?: Book) => {
+const useBookForm = (book?: Partial<Book>) => {
   const [createBook, { loading: isCreateLoading, error: createError }] =
     useMutation(CREATE_BOOK_MUTATION, {
       onCompleted: () => {
         toast.success('Book created')
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    })
+
+  const [updateBook, { loading: isEditLoading, error: editError }] =
+    useMutation(UPDATE_BOOK_MUTATION, {
+      onCompleted: () => {
+        toast.success('Book updated')
       },
       onError: (error) => {
         toast.error(error.message)
@@ -34,7 +40,7 @@ const useBookForm = (book?: Book) => {
         tags: book.tags ?? [],
         coverImage: book?.coverImage ?? '',
         blurb: book?.blurb ?? '',
-        rating: book.rating ?? 0,
+        rating: book.rating.toString() ?? '0',
         shelfId: book.shelfId ?? 0,
       }
     }
@@ -45,7 +51,7 @@ const useBookForm = (book?: Book) => {
       tags: [],
       coverImage: '',
       blurb: '',
-      rating: 0,
+      rating: '0',
       shelfId: 0,
     }
   }
@@ -63,18 +69,35 @@ const useBookForm = (book?: Book) => {
       setValue('tags', book.tags ?? [])
       setValue('coverImage', book?.coverImage ?? '')
       setValue('blurb', book?.blurb ?? '')
-      setValue('rating', book.rating ?? 0)
+      setValue('rating', book.rating.toString() ?? '0')
       setValue('shelfId', book.shelfId ?? 0)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [book])
 
+  const cleanFormData = (data) => {
+    return {
+      ...data,
+      authors: data.authors.map((author) => ({
+        id: author.id,
+        name: author.name,
+      })),
+      tags: data.tags.map((tag) => ({ id: tag.id, name: tag.name })),
+      shelfId: parseInt(data.shelfId),
+      rating: parseInt(data.rating),
+    }
+  }
+
   return {
     createBook,
     isCreateLoading,
     createError,
+    updateBook,
+    isEditLoading,
+    editError,
     handleSubmit,
     control,
+    cleanFormData,
     watch,
     setValue,
     formMethods,

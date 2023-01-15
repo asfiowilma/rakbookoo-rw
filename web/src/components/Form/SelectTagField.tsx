@@ -13,10 +13,7 @@ export const TAG_OPTIONS_QUERY = gql`
     }
   }
 `
-const SelectTagField = ({
-  setValue,
-  defaultValue,
-}: RakSelectFormProps<TagInput[]>) => {
+const SelectTagField = ({ setValue }: RakSelectFormProps<TagInput[]>) => {
   const { data } = useQuery(TAG_OPTIONS_QUERY)
   const [options, setOptions] = useState<Array<SelectOptionProps>>([])
 
@@ -43,8 +40,8 @@ const SelectTagField = ({
       id="tags"
       options={options}
       name="tags"
-      label="Tag(s)"
-      defaultValue={defaultValue.map((val) => val.id)}
+      label="Tag"
+      placeholder="Buku ini tentang apa? Genrenya? Trope? cth: fantasy, gore, enemies to lovers"
       onChange={onChange}
     />
   ) : null

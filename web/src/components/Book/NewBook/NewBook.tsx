@@ -4,17 +4,18 @@ import { toast } from '@redwoodjs/web/toast'
 
 import BookForm from 'src/components/Book/BookForm'
 import { CREATE_BOOK_MUTATION } from '../mutations'
+import useBookForm from 'src/hooks/useBookForm'
 
 const NewBook = () => {
-  const [createBook, { loading, error }] = useMutation(CREATE_BOOK_MUTATION, {
-    onCompleted: () => {
-      toast.success('Book created')
-      navigate(routes.books())
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    },
-  })
+  const {
+    createBook,
+    isCreateLoading,
+    createError,
+    control,
+    watch,
+    setValue,
+    formMethods,
+  } = useBookForm()
 
   const onSave = (input) => {
     const castInput = Object.assign(input, { shelfId: parseInt(input.shelfId) })
@@ -27,7 +28,16 @@ const NewBook = () => {
         <h1 className="text-h1">Buku Baru</h1>
       </header>
       <div>
-        <BookForm onSave={onSave} loading={loading} error={error} shelfId={0} />
+        <BookForm
+          onSave={onSave}
+          loading={isCreateLoading}
+          error={createError}
+          formMethods={formMethods}
+          setValue={setValue}
+          watch={watch}
+          control={control}
+          shelfId={0}
+        />
       </div>
     </>
   )

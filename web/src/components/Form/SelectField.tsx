@@ -1,46 +1,53 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Select from 'react-select'
 import { RakSelectFieldProps, SelectOptionProps } from 'types/form'
 
-import {
-  FieldError,
-  Label,
-  useErrorStyles,
-  useRegister,
-} from '@redwoodjs/forms'
+import { Controller, FieldError, useErrorStyles } from '@redwoodjs/forms'
+import RakLabel from './Label'
 
 const SelectField = ({
   label,
   name,
   options,
-  value,
   onChange,
   validation,
   placeholder,
   disabled,
   isSearchable,
 }: RakSelectFieldProps<string | number>) => {
-  const register = useRegister({ name, validation })
-
-  const { className: labelClassName, style: labelStyle } = useErrorStyles({
-    className: `rw-label`,
-    errorClassName: `rw-label rw-label-error`,
+  const { style: labelStyle } = useErrorStyles({
+    className: `label label-text`,
+    errorClassName: `label label-text label-error`,
     name,
   })
-
   return (
     <>
-      {label && (
-        <Label name={name} className={labelClassName} style={labelStyle}>
-          {label}
-        </Label>
-      )}
-      <Select
-        {...register}
-        value={options.find((opt: SelectOptionProps) => opt.value === value)}
-        onChange={(val, action) => onChange(val.value, action)}
-        isDisabled={disabled}
-        {...{ options, placeholder, isSearchable }}
+      {label && <RakLabel name={name} label={label} style={labelStyle} />}
+      <Controller
+        name={name}
+        rules={validation}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={options}
+            value={options.find(
+              (opt: SelectOptionProps) => opt.value === field.value
+            )}
+            onChange={(val, action) => onChange(val.value, action)}
+            isDisabled={disabled}
+            isSearchable={isSearchable}
+            placeholder={placeholder}
+            unstyled
+            classNames={{
+              control: () => 'input input-bordered',
+              menu: () => 'bg-base-300 rounded-md overflow-hidden',
+              menuList: () => 'p-2',
+              option: (state) =>
+                `p-2 rounded-btn transition cursor-pointer ${
+                  state.isFocused && 'bg-neutral-focus'
+                }`,
+            }}
+          />
+        )}
       />
       <FieldError name={name} />
     </>

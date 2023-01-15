@@ -7,8 +7,12 @@ import NoteForm from '../../Note/NoteForm'
 import { useState } from 'react'
 import Note from 'src/components/Note/Note'
 import { DELETE_BOOK_MUTATION } from '../mutations'
+import { useBookStore } from 'src/hooks/useBookStore'
+import { BiBookHeart } from 'react-icons/bi'
+import { truncate } from 'src/utils/truncate'
 
 const Book = ({ book }) => {
+  const { isBookModalOpen } = useBookStore()
   const [deleteBook] = useMutation(DELETE_BOOK_MUTATION, {
     onCompleted: () => {
       toast.success('Book deleted')
@@ -29,20 +33,31 @@ const Book = ({ book }) => {
 
   return (
     <>
-      <div className="absolute inset-0 -z-10 h-32 overflow-hidden opacity-40">
+      <div
+        className={`absolute inset-0 -z-10 overflow-hidden opacity-40 ${
+          isBookModalOpen ? 'h-32' : 'h-52'
+        }`}
+      >
         <img
           src={book.coverImage}
           alt={book.title}
-          className="h-full w-full scale-110 object-cover object-center blur"
+          className="h-full w-full scale-110 bg-base-300 object-cover object-center blur"
         />
       </div>
       <div>
         <div className="flex w-full gap-6">
-          <img
-            src={book.coverImage}
-            alt={book.title}
-            className="aspect-[2/3] h-72 rounded-xl object-cover"
-          />
+          {book.coverImage ? (
+            <img
+              src={book.coverImage}
+              alt={book.title}
+              className="aspect-[5/8] h-72 rounded-xl bg-base-300 object-cover"
+            />
+          ) : (
+            <div className="flex aspect-[5/8] h-72 flex-col items-center justify-center rounded-xl bg-neutral text-center text-neutral-content shadow">
+              <BiBookHeart className="h-12 w-12" />
+              {truncate(book.title, 32)}
+            </div>
+          )}
           <header className="my-4 flex flex-1 flex-col">
             <nav className="mt-4 flex flex-1 gap-4 self-end">
               <button

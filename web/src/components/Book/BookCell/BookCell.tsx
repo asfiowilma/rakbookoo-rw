@@ -3,6 +3,8 @@ import type { FindBookById } from 'types/graphql'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import Book from 'src/components/Book/Book'
+import { useBookStore } from 'src/hooks/useBookStore'
+import { useEffect } from 'react'
 
 export const QUERY = gql`
   query FindBookById($id: Int!) {
@@ -13,6 +15,7 @@ export const QUERY = gql`
       coverImage
       blurb
       rating
+      shelfId
       Shelf {
         name
       }
@@ -40,5 +43,11 @@ export const Failure = ({ error }: CellFailureProps) => (
 )
 
 export const Success = ({ book }: CellSuccessProps<FindBookById>) => {
+  const { setBook } = useBookStore()
+
+  useEffect(() => {
+    if (book) setBook(book)
+  }, [book])
+
   return <Book book={book} />
 }

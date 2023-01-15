@@ -1,12 +1,15 @@
 import type { EditBookById } from 'types/graphql'
 
-import { navigate, routes } from '@redwoodjs/router'
+import { back, navigate, routes } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import BookForm from 'src/components/Book/BookForm'
 import { UPDATE_BOOK_MUTATION } from '../mutations'
+import { useBookStore } from '../../../hooks/useBookStore'
+import { useEffect } from 'react'
+import useBookForm from 'src/hooks/useBookForm'
 
 export const QUERY = gql`
   query EditBookById($id: Int!) {
@@ -18,6 +21,17 @@ export const QUERY = gql`
       blurb
       rating
       shelfId
+      tags {
+        id
+        name
+      }
+      authors {
+        id
+        name
+      }
+      Shelf {
+        name
+      }
     }
   }
 `
@@ -29,35 +43,43 @@ export const Failure = ({ error }: CellFailureProps) => (
 )
 
 export const Success = ({ book }: CellSuccessProps<EditBookById>) => {
-  const [updateBook, { loading, error }] = useMutation(UPDATE_BOOK_MUTATION, {
-    onCompleted: () => {
-      toast.success('Book updated')
-      navigate(routes.books())
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    },
-  })
+  const { setBook } = useBookStore()
+  const {
+    setValue,
+    cleanFormData,
+    updateBook,
+    editError,
+    formMethods,
+    watch,
+    isEditLoading,
+  } = useBookForm(book)
+
+  useEffect(() => {
+    if (book) setBook(book)
+  }, [book])
 
   const onSave = (input, id) => {
-    const castInput = Object.assign(input, { shelfId: parseInt(input.shelfId) })
-    updateBook({ variables: { id, input: castInput } })
+    updateBook({ variables: { id, input: cleanFormData(input) } })
   }
 
   return (
-    <div className="rw-segment">
-      <header className="rw-segment-header">
-        <h2 className="rw-heading rw-heading-secondary">Edit Book {book.id}</h2>
-      </header>
-      <div className="rw-segment-main">
-        <BookForm
-          book={book}
-          shelfId={book.shelfId}
-          onSave={onSave}
-          error={error}
-          loading={loading}
-        />
+    <>
+      <div className="flex justify-between">
+        <h2 className="text-h2">Edit Buku</h2>
+        <button className="btn btn-ghost" onClick={back}>
+          Kembali
+        </button>
       </div>
-    </div>
+      <BookForm
+        book={book}
+        shelfId={book.shelfId}
+        onSave={onSave}
+        watch={watch}
+        formMethods={formMethods}
+        error={editError}
+        setValue={setValue}
+        loading={isEditLoading}
+      />
+    </>
   )
 }

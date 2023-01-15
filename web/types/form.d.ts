@@ -48,10 +48,7 @@ interface RakSelectFieldProps<T = unknown>
 }
 
 interface RakSelectFormProps<T>
-  extends Pick<
-    UseFormReturn<BookInputData, object>,
-    'control' | 'setValue' | 'watch'
-  > {
+  extends Pick<UseFormReturn<BookInputData, object>, 'setValue'> {
   defaultValue?: T
 }
 

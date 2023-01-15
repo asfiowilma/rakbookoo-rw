@@ -1,33 +1,38 @@
-import { routes } from '@redwoodjs/router'
+import { Link, routes, useLocation } from '@redwoodjs/router'
 import AppLayout from './AppLayout'
+import { useBookStore } from '../hooks/useBookStore'
 type BookLayoutProps = {
   children: React.ReactNode
 }
 
 const BooksLayout = ({ children }: BookLayoutProps) => {
+  const { book } = useBookStore()
+  const { pathname } = useLocation()
+
   return (
     <AppLayout>
       <div className="breadcrumbs text-sm">
         <ul>
           <li>
-            <a href={routes.home()} className="link link-hover">
+            <Link to={routes.library()} className="link link-hover">
               Rakbookoo
-            </a>
+            </Link>
           </li>
-          <li>Nama Rak</li>
-          <li>Judul Buku</li>
+          <li>
+            {book?.shelfId && (
+              <Link to={routes.shelf({ id: book.shelfId })}>
+                {book.Shelf.name}
+              </Link>
+            )}
+          </li>
+          <li>
+            {book?.id && (
+              <Link to={routes.book({ id: book.id })}>{book.title}</Link>
+            )}
+          </li>
+          {pathname.endsWith('edit') && <li>Edit</li>}
         </ul>
       </div>
-      {/* <header className="flex justify-between">
-        <h1>
-          <Link to={routes.books()} className="rw-link">
-            Books
-          </Link>
-        </h1>
-        <Link to={routes.newBook()} className="rw-button rw-button-green">
-          <div className="rw-button-icon">+</div> New Book
-        </Link>
-      </header> */}
       <main className="w-full">{children}</main>
     </AppLayout>
   )

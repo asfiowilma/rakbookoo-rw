@@ -2,28 +2,21 @@ import { useEffect, useState } from 'react'
 
 import { RakSelectFormProps, SelectOptionProps } from 'types/form'
 
-import { useAuth } from '@redwoodjs/auth'
 import { useQuery } from '@redwoodjs/web'
 
 import SelectField from 'src/components/Form/SelectField'
 
 export const SHELF_OPTIONS_QUERY = gql`
-  query FindShelves($userUid: String!) {
-    shelves(userUid: $userUid) {
+  query FindShelves {
+    shelves {
       id
       name
       userUid
     }
   }
 `
-const SelectShelfField = ({
-  defaultValue,
-  setValue,
-}: RakSelectFormProps<number>) => {
-  const { currentUser } = useAuth()
-  const { data } = useQuery(SHELF_OPTIONS_QUERY, {
-    variables: { userUid: currentUser.sub },
-  })
+const SelectShelfField = ({ setValue }: RakSelectFormProps<number>) => {
+  const { data } = useQuery(SHELF_OPTIONS_QUERY)
   const [shelfOptions, setShelfOptions] = useState<Array<SelectOptionProps>>([])
 
   useEffect(() => {
@@ -35,10 +28,10 @@ const SelectShelfField = ({
 
   return (
     <SelectField
-      label="Shelf"
-      defaultValue={defaultValue}
+      label="Rak"
       name="shelfId"
       options={shelfOptions}
+      placeholder="Pilih rak"
       onChange={(val, _action) => setValue('shelfId', val as number)}
     />
   )

@@ -5,10 +5,11 @@ import { RakCreatableSelectFieldProps, SelectOptionProps } from 'types/form'
 
 import {
   FieldError,
-  Label,
-  useErrorStyles,
   useRegister,
+  useErrorStyles,
+  Controller,
 } from '@redwoodjs/forms'
+import RakLabel from './Label'
 
 const CreatableSelectField = ({
   label,
@@ -22,14 +23,6 @@ const CreatableSelectField = ({
   isMulti,
   id,
 }: RakCreatableSelectFieldProps) => {
-  const { onChange: _onChange, ...register } = useRegister({ name, validation })
-
-  const { className: labelClassName, style: labelStyle } = useErrorStyles({
-    className: `rw-label`,
-    errorClassName: `rw-label rw-label-error`,
-    name,
-  })
-
   const onSelectChange = (
     val: SingleValue<SelectOptionProps>,
     action: ActionMeta<SelectOptionProps>
@@ -37,27 +30,48 @@ const CreatableSelectField = ({
     onChange(val, action)
   }
 
+  const { style: labelStyle } = useErrorStyles({
+    className: `label label-text`,
+    errorClassName: `label label-text label-error`,
+    name,
+  })
+
   return (
     <>
-      {label && (
-        <Label
-          name={name}
-          className="label label-text"
-          errorClassName="label label-text label-error"
-          style={labelStyle}
-        >
-          {label}
-        </Label>
-      )}
-      <CreatableSelect
-        id={`createable-${id}`}
-        options={options}
-        onChange={onSelectChange}
-        isDisabled={disabled}
-        formatCreateLabel={(inputValue: string) => inputValue}
-        noOptionsMessage={() => null}
-        {...{ isSearchable, isMulti, placeholder }}
-        {...register}
+      {label && <RakLabel name={name} label={label} style={labelStyle} />}
+      <Controller
+        name={name}
+        rules={validation}
+        render={({ field }) => (
+          <CreatableSelect
+            {...field}
+            id={`createable-${id}`}
+            options={options}
+            onChange={onSelectChange}
+            isDisabled={disabled}
+            unstyled
+            classNames={{
+              control: () => 'input input-bordered h-min',
+              menu: () => 'bg-base-300 rounded-md overflow-hidden',
+              menuList: () => 'p-2',
+              option: (state) =>
+                `p-2 rounded-btn transition cursor-pointer ${
+                  state.isFocused && 'bg-neutral-focus'
+                }`,
+              valueContainer: () => 'flex flex-wrap gap-2 py-3',
+              multiValue: () => 'badge badge-lg gap-2',
+            }}
+            placeholder={placeholder}
+            formatCreateLabel={(inputValue: string) => inputValue}
+            noOptionsMessage={() => null}
+            value={field.value.map((val) => ({
+              value: val.id,
+              label: val.name,
+            }))}
+            isSearchable={isSearchable}
+            isMulti={isMulti}
+          />
+        )}
       />
       <FieldError name={name} />
     </>

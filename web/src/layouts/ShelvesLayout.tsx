@@ -10,10 +10,6 @@ type ShelfLayoutProps = {
 
 const ShelvesLayout = ({ children }: ShelfLayoutProps) => {
   const { pathname } = useLocation()
-  console.log(
-    '🚀 ~ file: ShelvesLayout.tsx:11 ~ ShelvesLayout ~ pathname',
-    pathname
-  )
   const { shelfId, shelfName } = useShelfStore()
 
   return (

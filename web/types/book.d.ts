@@ -6,7 +6,7 @@ interface BookInputData {
   tags: TagInput[]
   coverImage?: string
   blurb?: string
-  rating: number
+  rating: string
   shelfId: number
 }
 

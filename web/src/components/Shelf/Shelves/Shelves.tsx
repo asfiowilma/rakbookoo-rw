@@ -61,8 +61,8 @@ const ShelvesList = ({ shelves }) => {
           <Link to={routes.shelf({ id: shelf.id })} className="flex-1">
             {truncate(shelf.name)}
           </Link>
-          <div className="dropdown-bottom dropdown-end dropdown flex-none">
-            <label tabIndex={0} className="btn btn-square btn-ghost btn-sm">
+          <div className="dropdown-bottom dropdown dropdown-end flex-none">
+            <label tabIndex={0} className="btn btn-ghost btn-square btn-sm">
               <FaEllipsisV />
             </label>
             <ul
@@ -99,12 +99,12 @@ const ShelvesList = ({ shelves }) => {
                 src={book.coverImage}
                 alt={book.title}
                 key={idx}
-                className="aspect-[2/3] w-full rounded-md bg-neutral shadow"
+                className="aspect-[5/8] w-full rounded-md bg-neutral shadow"
               />
             ) : (
               <div
                 key={idx}
-                className="grid aspect-[2/3] w-full place-items-center rounded-md bg-neutral text-neutral-content shadow"
+                className="grid aspect-[5/8] w-full place-items-center rounded-md bg-neutral text-neutral-content shadow"
               >
                 <BiBookHeart className="h-5 w-5" />
               </div>

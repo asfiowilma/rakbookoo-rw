@@ -4,6 +4,7 @@ import { FaEye, FaEyeSlash, FaUnlock } from 'react-icons/fa'
 import { RakInputProps } from 'types/form'
 
 import { FieldError, InputField, Label } from '@redwoodjs/forms'
+import RakLabel from './Label'
 
 const RakPasswordField = ({
   name,
@@ -16,15 +17,7 @@ const RakPasswordField = ({
 
   return (
     <>
-      {label && (
-        <Label
-          name={name}
-          className="label label-text"
-          errorClassName="label label-text label-error"
-        >
-          {label}
-        </Label>
-      )}
+      {label && <RakLabel name={name} label={label} />}
       <div className="input-group">
         <span>
           <FaUnlock />
