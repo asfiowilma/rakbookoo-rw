@@ -1,17 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { SingleValue, ActionMeta } from 'react-select'
-import CreatableSelect from 'react-select/creatable'
-import { RakCreatableSelectFieldProps, SelectOptionProps } from 'types/form'
+import React from 'react'
 
+import RakLabel from './Label'
+import Select from 'react-select'
+import { SingleValue, ActionMeta } from 'react-select'
 import {
   FieldError,
   useRegister,
   useErrorStyles,
   Controller,
 } from '@redwoodjs/forms'
-import RakLabel from './Label'
+import { RakCreatableSelectFieldProps, SelectOptionProps } from 'types/form'
 
-const CreatableSelectField = ({
+const MultiSelectField = ({
   label,
   name,
   options,
@@ -21,7 +21,6 @@ const CreatableSelectField = ({
   disabled,
   isSearchable,
   isMulti,
-  id,
 }: RakCreatableSelectFieldProps) => {
   const onSelectChange = (
     val: SingleValue<SelectOptionProps>,
@@ -43,9 +42,8 @@ const CreatableSelectField = ({
         name={name}
         rules={validation}
         render={({ field }) => (
-          <CreatableSelect
+          <Select
             {...field}
-            id={`createable-${id}`}
             options={options}
             onChange={onSelectChange}
             isDisabled={disabled}
@@ -62,7 +60,6 @@ const CreatableSelectField = ({
               multiValue: () => 'badge badge-lg gap-2',
             }}
             placeholder={placeholder}
-            formatCreateLabel={(inputValue: string) => inputValue}
             noOptionsMessage={() => null}
             value={
               field.value?.map((val) => ({
@@ -80,4 +77,4 @@ const CreatableSelectField = ({
   )
 }
 
-export default CreatableSelectField
+export default MultiSelectField

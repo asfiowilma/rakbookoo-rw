@@ -1,8 +1,8 @@
-import Select from 'react-select'
+import { Controller, FieldError, useErrorStyles } from '@redwoodjs/forms'
 import { RakSelectFieldProps, SelectOptionProps } from 'types/form'
 
-import { Controller, FieldError, useErrorStyles } from '@redwoodjs/forms'
 import RakLabel from './Label'
+import Select from 'react-select'
 
 const SelectField = ({
   label,
@@ -13,7 +13,7 @@ const SelectField = ({
   placeholder,
   disabled,
   isSearchable,
-}: RakSelectFieldProps<string | number>) => {
+}: RakSelectFieldProps<string | number | SelectOptionProps>) => {
   const { style: labelStyle } = useErrorStyles({
     className: `label label-text`,
     errorClassName: `label label-text label-error`,
@@ -32,7 +32,7 @@ const SelectField = ({
             value={options.find(
               (opt: SelectOptionProps) => opt.value === field.value
             )}
-            onChange={(val, action) => onChange(val.value, action)}
+            onChange={(val, _) => onChange(val, _)}
             isDisabled={disabled}
             isSearchable={isSearchable}
             placeholder={placeholder}

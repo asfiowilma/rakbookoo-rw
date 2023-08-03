@@ -98,7 +98,7 @@ const Book = ({ book }) => {
           <div className="rounded-box col-span-2 space-y-6 bg-base-100 bg-opacity-70 p-4">
             <div>
               <h3 className="font-bold text-gray-500">Deskripsi</h3>
-              <p>{book.blurb}</p>
+              <p className="whitespace-pre-wrap">{book.blurb}</p>
             </div>
             <div>
               <h3 className="flex justify-between font-bold text-gray-500">

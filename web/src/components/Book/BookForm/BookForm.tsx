@@ -70,7 +70,7 @@ const BookForm = ({
             {watch('coverImage') ? (
               <img
                 src={watch('coverImage')}
-                alt={book.title}
+                alt={book?.title ?? 'Book Cover'}
                 className="aspect-[5/8] h-80 rounded-lg bg-base-300 object-cover"
               />
             ) : (

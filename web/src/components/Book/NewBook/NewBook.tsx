@@ -15,11 +15,11 @@ const NewBook = () => {
     watch,
     setValue,
     formMethods,
+    cleanFormData,
   } = useBookForm()
 
   const onSave = (input) => {
-    const castInput = Object.assign(input, { shelfId: parseInt(input.shelfId) })
-    createBook({ variables: { input: castInput } })
+    createBook({ variables: { input: cleanFormData(input) } })
   }
 
   return (

@@ -52,6 +52,12 @@ interface RakSelectFormProps<T>
   defaultValue?: T
 }
 
+interface RakSelectSearchFormProps<T>
+  extends Pick<UseFormReturn<SearchData, object>, 'setValue'> {
+  defaultValue?: T
+  className?: string
+}
+
 type RakCreatableSelectFieldProps = Omit<RakSelectFieldProps, 'options'> & {
   id: string
   onCreateInput?: CallableFunction

@@ -9,7 +9,7 @@ import { validateWith } from '@redwoodjs/api'
 
 import { db } from 'src/lib/db'
 
-export const books: QueryResolvers['booksByUserUid'] = () => {
+export const books: QueryResolvers['books'] = () => {
   requireAuth()
   console.log(context.currentUser)
 
@@ -17,7 +17,7 @@ export const books: QueryResolvers['booksByUserUid'] = () => {
     take: 24,
     where: {
       Shelf: {
-        userUid: { equals: context.currentUser.sub },
+        userUid: { equals: context.currentUser.sub as string },
       },
     },
     orderBy: [{ title: 'asc' }],
@@ -63,10 +63,28 @@ export const updateBook: MutationResolvers['updateBook'] = ({ id, input }) => {
   /* TODO: add validations
   - one book can only have max 12 tags
   - one book can only have max 12 authors */
-  return db.book.update({
-    data: input,
-    where: { id },
+
+  validateWith(() => {
+    if (input.authors.length > 12)
+      throw 'This book has too many authors. Please enter no more than 12 authors'
   })
+  validateWith(() => {
+    if (input.tags.length > 12)
+      throw 'This book has too many tags. Please enter no more than 12 tags'
+  })
+
+  const authors = {
+    connect: input.authors.filter((a) => a.id).map((a) => ({ id: a.id })),
+    create: input.authors.filter((a) => !a.id).map((a) => ({ name: a.name })),
+  }
+
+  const tags = {
+    connect: input.tags.filter((t) => t.id).map((t) => ({ id: t.id })),
+    create: input.tags.filter((t) => !t.id).map((t) => ({ name: t.name })),
+  }
+
+  const data = { ...input, authors, tags }
+  return db.book.update({ data, where: { id } })
 }
 
 export const deleteBook: MutationResolvers['deleteBook'] = ({ id }) => {

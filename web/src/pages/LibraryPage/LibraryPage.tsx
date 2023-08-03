@@ -7,10 +7,11 @@ import { MetaTags } from '@redwoodjs/web'
 import BookModal, { Location } from 'src/components/Book/Book/BookModal'
 import LibraryCell from 'src/components/LibraryCell'
 import { BiPlus } from 'react-icons/bi'
+import Search from 'src/components/Search/Search'
 
 const LibraryPage = () => {
   const auth = useAuth()
-  const { isAuthenticated, currentUser } = auth
+  const { isAuthenticated } = auth
 
   if (!isAuthenticated) navigate(routes.login())
 
@@ -52,6 +53,7 @@ const LibraryPage = () => {
           Buku Baru
         </Link>
       </div>
+      <Search />
       <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 lg:grid-cols-6">
         <LibraryCell />
       </div>
