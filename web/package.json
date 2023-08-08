@@ -20,6 +20,7 @@
     "@redwoodjs/web": "^3.4.0",
     "@supabase/supabase-js": "^1.35.6",
     "@tailwindcss/line-clamp": "^0.4.0",
+    "axios": "^1.4.0",
     "boring-avatars": "^1.7.0",
     "daisyui": "^3.5.0",
     "moment": "^2.29.4",
@@ -28,6 +29,7 @@
     "react-dom": "17.0.2",
     "react-icons": "^4.7.1",
     "react-select": "^5.7.0",
+    "uuid": "^9.0.0",
     "zustand": "^4.1.0"
   },
   "devDependencies": {

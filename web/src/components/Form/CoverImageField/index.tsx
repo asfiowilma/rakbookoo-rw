@@ -1,40 +1,29 @@
-import { BiBookHeart, BiGlobe, BiSearch } from 'react-icons/bi'
-import {
-  FileField,
-  Form,
-  RadioField,
-  TextField,
-  UseFormReturn,
-  useForm,
-} from '@redwoodjs/forms'
+import { FileField, RadioField, UseFormReturn, useForm } from '@redwoodjs/forms'
 
+import { BiBookHeart } from 'react-icons/bi'
 import { Book } from 'types/graphql'
-import { FaUpload } from 'react-icons/fa'
-import Input from 'react-select/dist/declarations/src/components/Input'
 import RakLabel from '../Label'
 import RakTextField from '../TextField'
-import { useState } from 'react'
+import { useEffect } from 'react'
+import { useUploadCoverImage } from 'src/hooks/useUploadCoverImage'
 
 interface CoverImageFieldProps
-  extends Pick<UseFormReturn<BookInputData, object>, 'watch'> {
+  extends Pick<UseFormReturn<BookInputData, object>, 'watch' | 'setValue'> {
   book: Partial<Book>
 }
 
-interface CoverImage {
+interface CoverImage
+  extends Pick<UseFormReturn<BookInputData, object>, 'setValue'> {
   chooseImageBy: ChooseImageBy
 }
 
-enum ChooseImageBy {
+export enum ChooseImageBy {
   upload = 'Upload',
   url = 'URL',
   search = 'Search',
 }
 
-const CoverImageField = ({ watch, book }: CoverImageFieldProps) => {
-  const coverForm = useForm<CoverImage>({
-    defaultValues: { chooseImageBy: ChooseImageBy.upload },
-  })
-
+const CoverImageField = ({ watch, setValue, book }: CoverImageFieldProps) => {
   return (
     <>
       <div className="relative flex min-w-[20rem] justify-center rounded-xl border border-base-content/20 p-6">
@@ -60,7 +49,7 @@ const CoverImageField = ({ watch, book }: CoverImageFieldProps) => {
         )}
       </div>
       <RakLabel name="coverImage" label="Book Cover"></RakLabel>
-      <Form formMethods={coverForm} className="join my-2">
+      <div className="join my-2">
         <RadioField
           className="btn join-item btn-sm"
           name="chooseImageBy"
@@ -79,13 +68,30 @@ const CoverImageField = ({ watch, book }: CoverImageFieldProps) => {
           value={ChooseImageBy.search}
           aria-label={ChooseImageBy.search}
         />
-      </Form>
-      <ImageInput chooseImageBy={coverForm.watch('chooseImageBy')} />
+      </div>
+      <ImageInput
+        chooseImageBy={watch('chooseImageBy') as ChooseImageBy}
+        setValue={setValue}
+      />
     </>
   )
 }
 
-const ImageInput = ({ chooseImageBy }: CoverImage) => {
+const ImageInput = ({ chooseImageBy, setValue }: CoverImage) => {
+  const { uploadStatus, uploadCoverImage } = useUploadCoverImage()
+
+  useEffect(() => {
+    if (uploadStatus && uploadStatus.status === 'Success') {
+      setValue('coverImage', uploadStatus.coverImage)
+      console.log(
+        '🚀 ~ file: index.tsx:90 ~ useEffect ~  uploadStatus.coverImage:',
+        uploadStatus.coverImage
+      )
+    }
+  }, [uploadStatus])
+
+  const uploadImage = async (file: File) => uploadCoverImage(file)
+
   switch (chooseImageBy) {
     case ChooseImageBy.search:
     case ChooseImageBy.url:
@@ -100,6 +106,7 @@ const ImageInput = ({ chooseImageBy }: CoverImage) => {
       return (
         <FileField
           name="coverImage"
+          onChange={(e) => uploadImage(e.target.files[0])}
           className="file-input file-input-bordered"
         />
       )

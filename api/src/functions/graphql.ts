@@ -11,7 +11,7 @@ import services from 'src/services/**/*.{js,ts}'
 export const handler = createGraphQLHandler({
   getCurrentUser,
   generateGraphiQLHeader,
-  loggerConfig: { logger, options: {} },
+  loggerConfig: { logger, options: { operationName: true, tracing: true } },
   directives,
   sdls,
   services,

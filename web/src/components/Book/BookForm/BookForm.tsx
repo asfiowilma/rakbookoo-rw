@@ -69,7 +69,7 @@ const BookForm = ({
       <div>
         <div className="flex w-full gap-6">
           <div className="flex flex-none flex-col">
-            <CoverImageField watch={watch} book={book} />
+            <CoverImageField watch={watch} setValue={setValue} book={book} />
             <RatingField name="rating" label="Rating" watch={watch} />
           </div>
           <div className="flex flex-1 flex-col">

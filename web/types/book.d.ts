@@ -8,6 +8,7 @@ interface BookInputData {
   blurb?: string
   rating: string
   shelfId: number
+  chooseImageBy: 'Upload' | 'URL' | 'Search'
 }
 
 type BaseItemInput = {
