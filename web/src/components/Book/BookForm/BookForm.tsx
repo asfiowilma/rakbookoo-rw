@@ -1,26 +1,28 @@
-import { useEffect } from 'react'
-
+import { BiBookHeart, BiGlobe, BiSearch } from 'react-icons/bi'
 import {
   Form,
   FormError,
-  Submit,
   RWGqlError,
+  Submit,
   UseFormReturn,
   UseFormSetValue,
   UseFormWatch,
 } from '@redwoodjs/forms'
 
-import TextAreaField from 'src/components/Form/TextAreaField'
-import TextField from 'src/components/Form/TextField'
+import { Book } from 'types/graphql'
+import CoverImageField from 'src/components/Form/CoverImageField'
+import { FaUpload } from 'react-icons/fa'
+import { MdError } from 'react-icons/md'
+import RakLabel from 'src/components/Form/Label'
+import RatingField from 'src/components/Form/RatingField'
 import SelectAuthorField from 'src/components/Form/SelectAuthorField'
 import SelectShelfField from 'src/components/Form/SelectShelfField'
 import SelectTagField from 'src/components/Form/SelectTagField'
-import { FaStar } from 'react-icons/fa'
+import TextAreaField from 'src/components/Form/TextAreaField'
+import TextField from 'src/components/Form/TextField'
 import { back } from '@redwoodjs/router'
-import { BiBookHeart } from 'react-icons/bi'
-import { Book } from 'types/graphql'
-import RatingField from 'src/components/Form/RatingField'
-import { MdError } from 'react-icons/md'
+import { book } from '../../../../../api/src/services/books/books'
+import { useEffect } from 'react'
 
 interface BookFormProps {
   book?: Partial<Book>
@@ -67,19 +69,8 @@ const BookForm = ({
       <div>
         <div className="flex w-full gap-6">
           <div className="flex flex-none flex-col">
-            {watch('coverImage') ? (
-              <img
-                src={watch('coverImage')}
-                alt={book?.title ?? 'Book Cover'}
-                className="aspect-[5/8] h-80 rounded-lg bg-base-300 object-cover"
-              />
-            ) : (
-              <div className="flex aspect-[5/8] h-80 w-auto flex-col items-center justify-center rounded-md bg-neutral text-center text-neutral-content shadow">
-                <BiBookHeart className="h-12 w-12" />
-              </div>
-            )}
+            <CoverImageField watch={watch} setValue={setValue} book={book} />
             <RatingField name="rating" label="Rating" watch={watch} />
-            <TextField name="coverImage" label="Book Cover" />
           </div>
           <div className="flex flex-1 flex-col">
             <SelectShelfField setValue={setValue} />

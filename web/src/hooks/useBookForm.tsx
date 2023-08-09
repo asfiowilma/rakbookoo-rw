@@ -1,14 +1,14 @@
-import { useEffect } from 'react'
-
-import { Book } from 'types/graphql'
-
-import { useForm } from '@redwoodjs/forms'
-import { useMutation } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/toast'
 import {
   CREATE_BOOK_MUTATION,
   UPDATE_BOOK_MUTATION,
 } from 'src/components/Book/mutations'
+
+import { Book } from 'types/graphql'
+import { ChooseImageBy } from 'src/components/Form/CoverImageField'
+import { toast } from '@redwoodjs/web/toast'
+import { useEffect } from 'react'
+import { useForm } from '@redwoodjs/forms'
+import { useMutation } from '@redwoodjs/web'
 
 const useBookForm = (book?: Partial<Book>) => {
   const [createBook, { loading: isCreateLoading, error: createError }] =
@@ -42,6 +42,7 @@ const useBookForm = (book?: Partial<Book>) => {
         blurb: book?.blurb ?? '',
         rating: book.rating.toString() ?? '0',
         shelfId: book.shelfId ?? 0,
+        chooseImageBy: ChooseImageBy.url,
       }
     }
     return {
@@ -53,6 +54,7 @@ const useBookForm = (book?: Partial<Book>) => {
       blurb: '',
       rating: '0',
       shelfId: 0,
+      chooseImageBy: ChooseImageBy.upload,
     }
   }
 

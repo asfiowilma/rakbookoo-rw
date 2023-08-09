@@ -1,6 +1,5 @@
-import type { FindShelfById } from 'types/graphql'
-
-import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
+import type { CellFailureProps, CellSuccessProps } from '@redwoodjs/web'
+import type { FindShelfById, Shelf as IShelf } from 'types/graphql'
 
 import Shelf from 'src/components/Shelf/Shelf'
 import { useEffect } from 'react'
@@ -42,7 +41,7 @@ export const Success = ({ shelf }: CellSuccessProps<FindShelfById>) => {
   const { setShelf } = useShelfStore()
 
   useEffect(() => {
-    if (shelf) setShelf(shelf)
+    if (shelf) setShelf(shelf as IShelf)
   }, [shelf])
 
   return <Shelf shelf={shelf} />
