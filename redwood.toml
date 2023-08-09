@@ -10,6 +10,9 @@
   port = 8910
   apiUrl = "/api"
   includeEnvironmentVariables = [] # any ENV vars that should be available to the web side, see https://redwoodjs.com/docs/environment-variables#web
+  extendGraphQLImports = [
+    "src/upload.js",
+  ]
 [api]
   port = 8911
 [browser]

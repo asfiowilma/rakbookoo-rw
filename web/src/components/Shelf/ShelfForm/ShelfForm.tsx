@@ -1,12 +1,33 @@
-import { useAuth } from '@redwoodjs/auth'
-import TextField from 'src/components/Form/TextField'
-import { Form, FormError, Submit, HiddenField, useForm } from '@redwoodjs/forms'
-import ShelfThumbnail from '../ShelfThumbnail'
-import useDebounce from 'src/hooks/useDebounce'
-import { back } from '@redwoodjs/router'
+import {
+  Form,
+  FormError,
+  FormProps,
+  HiddenField,
+  Submit,
+  useForm,
+} from '@redwoodjs/forms'
 
-const ShelfForm = ({ shelf, onSave, loading, error }) => {
-  const formMethods = useForm()
+import { Shelf } from 'types/graphql'
+import ShelfThumbnail from '../ShelfThumbnail'
+import TextField from 'src/components/Form/TextField'
+import { back } from '@redwoodjs/router'
+import { useAuth } from '@redwoodjs/auth'
+import useDebounce from 'src/hooks/useDebounce'
+
+interface ShelfFormProps {
+  shelf?: Partial<Shelf>
+  onSave?: (data: ShelfData, shelfId: number) => void
+  loading?: boolean
+  error?: FormProps<ShelfData>['error']
+}
+
+interface ShelfData {
+  name: string
+  userUid: string
+}
+
+const ShelfForm = ({ shelf, onSave, loading, error }: ShelfFormProps) => {
+  const formMethods = useForm<ShelfData>()
   const previewThumbnail = formMethods.watch('name', shelf?.name ?? '')
   const debouncedThumbnail: string = useDebounce<string>(previewThumbnail, 500)
   const { userMetadata: user } = useAuth()

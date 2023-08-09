@@ -83,10 +83,6 @@ const ImageInput = ({ chooseImageBy, setValue }: CoverImage) => {
   useEffect(() => {
     if (uploadStatus && uploadStatus.status === 'Success') {
       setValue('coverImage', uploadStatus.coverImage)
-      console.log(
-        '🚀 ~ file: index.tsx:90 ~ useEffect ~  uploadStatus.coverImage:',
-        uploadStatus.coverImage
-      )
     }
   }, [uploadStatus])
 
@@ -106,6 +102,7 @@ const ImageInput = ({ chooseImageBy, setValue }: CoverImage) => {
       return (
         <FileField
           name="coverImage"
+          accept=".png, .jpg, .jpeg"
           onChange={(e) => uploadImage(e.target.files[0])}
           className="file-input file-input-bordered"
         />
